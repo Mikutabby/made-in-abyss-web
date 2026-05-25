@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.ª Capa — Foso del Mundo Frágil · Made in Abyss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #05050a;
+  color: #e2e8f0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}}
+
+/* ── Hero ────────────────────────────────── */
+.layer-hero {{
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(180deg, #1a3a2a, #0d2818, #0a1f12);
+  overflow: hidden;
+}}
+.layer-hero::before {{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.03) 0%, transparent 70%);
+  pointer-events: none;
+}}
+.layer-hero::after {{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(5,5,10,0.6) 80%, rgba(5,5,10,0.95) 100%);
+  pointer-events: none;
+}}
+
+.layer-number {{
+  font-family: 'Cinzel', serif;
+  font-size: clamp(5rem, 15vw, 12rem);
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}}
+
+.hero-content {{
+  position: relative;
+  z-index: 1;
+}}
+.hero-label {{
+  font-size: 0.8rem;
+  color: #4ade80;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+}}
+.hero-name {{
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}}
+.hero-depth {{
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1rem, 2.5vw, 1.8rem);
+  color: #4ade80;
+  opacity: 0.7;
+  letter-spacing: 0.1em;
+}}
+
+/* ── Stats ───────────────────────────────── */
+.stats-bar {{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 3rem;
+}}
+.stat-item {{
+  text-align: center;
+}}
+.stat-label {{
+  font-size: 0.65rem;
+  color: #64748b;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}}
+.stat-value {{
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: #4ade80;
+}}
+
+/* ── Scroll hint ─────────────────────────── */
+.scroll-hint {{
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: #475569;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  z-index: 1;
+}}
+.scroll-hint .arrow {{
+  width: 16px;
+  height: 16px;
+  border-right: 1.5px solid #475569;
+  border-bottom: 1.5px solid #475569;
+  transform: rotate(45deg);
+  animation: hintBounce 2s infinite;
+}}
+@keyframes hintBounce {{
+  0%, 100% {{ transform: rotate(45deg) translateY(0); opacity: 0.5; }}
+  50% {{ transform: rotate(45deg) translateY(6px); opacity: 1; }}
+}}
+
+/* ── Content ─────────────────────────────── */
+.content-section {{
+  padding: 5rem 2rem 6rem;
+  max-width: 900px;
+  margin: 0 auto;
+}}
+.content-section h3 {{
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #4ade80;
+}}
+.content-section p {{
+  color: #94a3b8;
+  line-height: 1.9;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}}
+
+/* ── Curse card ──────────────────────────── */
+.curse-card {{
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 3rem;
+}}
+.curse-card h4 {{
+  font-family: 'Cinzel', serif;
+  color: #4ade80;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}}
+.curse-card p {{ color: #94a3b8; font-size: 0.95rem; }}
+
+/* ── Video ───────────────────────────────── */
+.video-wrapper {{
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}}
+.video-wrapper iframe {{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}}
+
+/* ── Back button ─────────────────────────── */
+.back-btn {{
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2rem;
+  background: rgba(5,5,10,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: #94a3b8;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}}
+.back-btn:hover {{
+  border-color: #4ade80;
+  color: #fff;
+  transform: translateX(-4px);
+}}
+
+/* ── Nav dots ────────────────────────────── */
+.nav-dots {{
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 100;
+}}
+.nav-dot {{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}}
+.nav-dot:hover,
+.nav-dot.active {{ background: #4ade80; transform: scale(1.3); }}
+
+/* ── Footer ──────────────────────────────── */
+.footer {{
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  color: #475569;
+  font-size: 0.8rem;
+}}
+
+@media (max-width: 768px) {{
+  .nav-dots {{ display: none; }}
+  .stats-bar {{ gap: 1rem; }}
+  .content-section {{ padding: 3rem 1.5rem; }}
+}}
+</style>
+</head>
+<body>
+
+<a href="../index.html#abyss-map" class="back-btn">← Volver al Abismo</a>
+
+<div class="nav-dots">
+  <a href="layer-1.html" class="nav-dot" title="Superficie"></a>
+  <a href="layer-2.html" class="nav-dot" title="1.ª Capa"></a>
+  <a href="layer-3.html" class="nav-dot" title="2.ª Capa"></a>
+  <a href="layer-4.html" class="nav-dot" title="3.ª Capa"></a>
+  <a href="layer-5.html" class="nav-dot" title="4.ª Capa"></a>
+  <a href="layer-6.html" class="nav-dot" title="5.ª Capa"></a>
+  <a href="layer-7.html" class="nav-dot" title="6.ª Capa"></a>
+  <a href="layer-8.html" class="nav-dot" title="7.ª Capa"></a>
+</div>
+
+<section class="layer-hero">
+  <div class="layer-number">I</div>
+  <div class="hero-content">
+    <div class="hero-label">1.ª Capa</div>
+    <h1 class="hero-name">Foso del Mundo Frágil</h1>
+    <div class="hero-depth">0 – 1,350 m</div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-label">Peligrosidad</div>
+        <div class="stat-value">Bajo - Moderado</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Maldición</div>
+        <div class="stat-value">Mareos y náuseas leves</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Criaturas</div>
+        <div class="stat-value">Pinzón Carmesí, Terror Crestado, Sanguijuela Colgante</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    EXPLORAR
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<div class="content-section">
+  <h3>Descripción de la Capa</h3>
+  <p>La capa más superficial del Abismo, bañada aún por la luz del sol. Un exuberante ecosistema de flora y fauna única florece en sus paredes. Aquí la Maldición del Abismo es apenas perceptible: mareos y náuseas al ascender. Los Silbatos Rojos entrenan en esta capa, aprendiendo a moverse por el vertical mundo del Abismo. Es el hogar de los Pinzones Carmesí y el Terror Crestado. La gran góndola de la cascada transporta a los exploradores hasta los 600 metros de profundidad.</p>
+
+  <div class="curse-card">
+    <h4>☠ Maldición del Abismo</h4>
+    <p>La Maldición en la 1.ª Capa es extremadamente leve. Quienes ascienden experimentan mareos y náuseas pasajeras, similares al vértigo. Los exploradores novatos pueden acostumbrarse con la práctica.</p>
+  </div>
+
+  <h3>Video Explicativo</h3>
+  <p style="margin-bottom:1.5rem; color:#64748b; font-size:0.9rem;">
+    Un análisis detallado de esta capa y su importancia en el mundo de Made in Abyss.
+  </p>
+  <div class="video-wrapper">
+    <iframe src="https://www.youtube.com/embed/9vuAYbaacJI?autoplay=0&rel=0" 
+      title="Made in Abyss - All Layers Explained" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>Fan page · Made in Abyss es propiedad de Akihito Tsukushi · Sin fines de lucro</p>
+</footer>
+
+<script>
+// Highlight current layer dot
+document.querySelectorAll('.nav-dot').forEach((dot, i) => {{
+  const path = window.location.pathname.split('/').pop();
+  if (dot.getAttribute('href') === path) {{
+    dot.classList.add('active');
+  }}
+}});
+
+// Smooth scroll
+document.querySelector('.scroll-hint')?.addEventListener('click', () => {{
+  window.scrollTo({{ top: window.innerHeight, behavior: 'smooth' }});
+}});
+</script>
+</body>
+</html>

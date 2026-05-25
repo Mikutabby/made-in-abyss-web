@@ -4,24 +4,30 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Made in Abyss — El Abismo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── Reset & Base ──────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #07070d;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #05050a;
   color: #e2e8f0;
   overflow-x: hidden;
 }
 
 /* ── Typography ────────────────────────────────────────── */
 h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
-h1 { font-size: clamp(3rem, 10vw, 8rem); }
-h2 { font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; margin-bottom: 3rem; }
-.subtitle { font-size: clamp(1rem, 2vw, 1.3rem); color: #94a3b8; letter-spacing: 0.3em; text-transform: uppercase; }
 
-/* ── Hero ──────────────────────────────────────────────── */
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #05050a; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #8b5cf6, #2dd4bf, #d4a574); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════════════════
+   HERO — Like the anime title screen
+   ═══════════════════════════════════════════════════════════ */
 .hero {
   position: relative;
   height: 100vh;
@@ -32,19 +38,23 @@ h2 { font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; margin-bottom: 3re
   text-align: center;
   overflow: hidden;
 }
-.hero::before {
-  content: '';
+.hero-bg {
   position: absolute;
   inset: 0;
-  background: url('assets/hero-bg.webp') center/cover no-repeat;
-  opacity: 0.4;
+  background: url('assets/hero-bg.webp') center 30%/cover no-repeat;
+  opacity: 0.35;
   z-index: 0;
+  will-change: transform;
 }
-.hero::after {
-  content: '';
+.hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(7,7,13,0.6) 0%, rgba(7,7,13,0.3) 50%, rgba(7,7,13,0.8) 100%);
+  background: linear-gradient(180deg,
+    rgba(5,5,10,0.7) 0%,
+    rgba(5,5,10,0.2) 40%,
+    rgba(5,5,10,0.1) 60%,
+    rgba(5,5,10,0.8) 100%
+  );
   z-index: 0;
 }
 #hero-canvas {
@@ -54,20 +64,45 @@ h2 { font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; margin-bottom: 3re
 }
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
-.hero h1 {
-  background: linear-gradient(135deg, #e2e8f0 0%, #8b5cf6 40%, #2dd4bf 70%, #d4a574 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: heroGlow 4s ease-in-out infinite alternate;
+
+/* Official logo styling */
+.hero-logo {
+  width: min(90vw, 700px);
+  height: auto;
+  filter: drop-shadow(0 0 60px rgba(139,92,246,0.3))
+          drop-shadow(0 0 120px rgba(45,212,191,0.15));
+  animation: logoFloat 6s ease-in-out infinite alternate;
 }
-@keyframes heroGlow {
-  0% { filter: brightness(1); }
-  100% { filter: brightness(1.3); }
+@keyframes logoFloat {
+  0% { filter: drop-shadow(0 0 60px rgba(139,92,246,0.3)) drop-shadow(0 0 120px rgba(45,212,191,0.15)); }
+  100% { filter: drop-shadow(0 0 80px rgba(139,92,246,0.5)) drop-shadow(0 0 160px rgba(45,212,191,0.25)); }
 }
-.hero .subtitle { margin-top: 1rem; }
+
+.hero .subtitle {
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+  color: #94a3b8;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.hero .subtitle span {
+  display: inline-block;
+  animation: subtitleReveal 2s ease forwards;
+  opacity: 0;
+}
+@keyframes subtitleReveal {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 .hero .scroll-hint {
   position: absolute;
   bottom: 2rem;
@@ -77,172 +112,474 @@ h2 { font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; margin-bottom: 3re
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  color: #64748b;
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
+  color: #475569;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  animation: bounce 2s infinite;
-  z-index: 1;
+  z-index: 2;
 }
-@keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
+.hero .scroll-hint .arrow {
+  width: 20px;
+  height: 20px;
+  border-right: 1.5px solid #475569;
+  border-bottom: 1.5px solid #475569;
+  transform: rotate(45deg);
+  animation: scrollBounce 2s infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.5; }
+  50% { transform: rotate(45deg) translateY(6px); opacity: 1; }
 }
 
-/* ── Sections ──────────────────────────────────────────── */
-section { position: relative; padding: 6rem 1rem; }
-.section-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+/* ═══════════════════════════════════════════════════════════
+   DESCENT PROGRESS BAR
+   ═══════════════════════════════════════════════════════════ */
+.descent-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8b5cf6, #2dd4bf, #d4a574, #dc2626);
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+.descent-depth {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: rgba(148,163,184,0.4);
+  letter-spacing: 0.2em;
+  pointer-events: none;
+  text-align: right;
+  line-height: 1.6;
+}
+.descent-depth .num {
+  font-size: 2rem;
+  color: rgba(139,92,246,0.3);
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ABYSS MAP — Interactive cross-section
+   ═══════════════════════════════════════════════════════════ */
+.abyss-map-section {
+  position: relative;
+  padding: 8rem 1rem 12rem;
+  background: linear-gradient(180deg, #05050a 0%, #080816 40%, #05050a 100%);
+  overflow: hidden;
+}
+.abyss-map-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.abyss-map-title {
+  text-align: center;
+  margin-bottom: 4rem;
   position: relative;
   z-index: 1;
 }
-
-/* ── Layers Section ────────────────────────────────────── */
-.layers-section { background: linear-gradient(180deg, #07070d 0%, #0a0a1a 50%, #07070d 100%); }
-.layer-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 1rem;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.5s ease;
-  opacity: 0;
-  transform: translateY(40px);
+.abyss-map-title h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  background: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.layer-card.visible {
+.abyss-map-title p {
+  color: #64748b;
+  margin-top: 0.8rem;
+  letter-spacing: 0.3em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+/* Map container */
+.map-container {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.map-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 80px rgba(139,92,246,0.1);
+}
+
+/* Layer hotspots overlay */
+.map-hotspots {
+  position: absolute;
+  inset: 0;
+}
+.map-hotspot {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 0.3rem;
+  transition: all 0.4s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.map-hotspot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(45,212,191,0.04));
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.map-hotspot::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  transition: all 0.4s ease;
+}
+.map-hotspot:hover::before { opacity: 1; }
+.map-hotspot:hover::after {
+  border-color: transparent;
+  box-shadow: inset 0 0 30px rgba(139,92,246,0.15);
+}
+.map-hotspot:hover {
+  border-color: rgba(255,255,255,0.1);
+  transform: scale(1.02);
+}
+.map-hotspot:hover .hotspot-label {
   opacity: 1;
   transform: translateY(0);
 }
-.layer-card:hover {
-  border-color: rgba(139,92,246,0.3);
-  background: rgba(255,255,255,0.06);
-  transform: translateY(-4px);
-}
-.layer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 0.8rem;
-}
-.layer-number {
-  font-size: 0.9rem;
-  color: #8b5cf6;
-  letter-spacing: 0.2em;
+
+.hotspot-label {
+  font-size: clamp(0.55rem, 1vw, 0.75rem);
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.4s ease;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
+  z-index: 1;
+  text-align: center;
+  line-height: 1.3;
+  padding: 0.2rem;
 }
-.layer-depth {
-  font-size: 0.85rem;
-  color: #64748b;
-  font-family: monospace;
-}
-.layer-name {
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: #d4a574;
-  margin-bottom: 0.5rem;
-}
-.layer-desc { color: #94a3b8; line-height: 1.7; }
 
-/* Curse indicator */
-.curse-bar {
-  height: 3px;
-  border-radius: 2px;
-  margin-top: 1rem;
-  background: linear-gradient(90deg, transparent, #8b5cf6, #2dd4bf, #d4a574);
-  transition: width 1.5s ease;
-  width: 0;
-}
-.layer-card.visible .curse-bar { width: 100%; }
+/* Layer positions (approximate percentages based on depth ratio) */
+.hotspot-surface  { top: 0%; height: 5%; }
+.hotspot-layer1   { top: 5%; height: 6%; }
+.hotspot-layer2   { top: 11%; height: 6%; }
+.hotspot-layer3   { top: 20%; height: 20%; }
+.hotspot-layer4   { top: 43%; height: 12%; }
+.hotspot-layer5   { top: 57%; height: 12%; }
+.hotspot-layer6   { top: 71%; height: 16%; }
+.hotspot-layer7   { top: 89%; height: 11%; }
 
-/* ── Characters ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════
+   CHARACTERS — Full-page modal with GIF
+   ═══════════════════════════════════════════════════════════ */
 .characters-section {
-  background: linear-gradient(180deg, #07070d, #0d0d1a);
+  position: relative;
+  padding: 6rem 1rem 8rem;
+  background: linear-gradient(180deg, #05050a, #0a0a18);
 }
+.characters-section h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .char-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
 .char-card {
   position: relative;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 1.2rem;
   padding: 2rem;
-  padding-top: 4rem;
+  padding-top: 3.5rem;
   overflow: hidden;
-  transition: all 0.4s ease;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: pointer;
   min-height: 320px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  background: rgba(255,255,255,0.02);
 }
 .char-card::before {
   content: '';
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
-  transition: transform 0.6s ease;
+  background-position: center 20%;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
 }
-.char-card:nth-child(1)::before { background-image: url('assets/riko-reg.webp'); background-position: center 20%; }
-.char-card:nth-child(2)::before { background-image: url('assets/riko-reg-alt.webp'); background-position: center 20%; }
-.char-card:nth-child(3)::before { background-image: url('assets/nanachi-underground.webp'); background-position: center 30%; }
-.char-card:nth-child(4)::before { background-image: url('assets/ozen.webp'); background-position: center 20%; }
-.char-card:nth-child(5)::before { background-image: url('assets/bondrewd.webp'); background-position: center 20%; }
-.char-card:nth-child(6)::before { background-image: url('assets/nanachi-portrait.webp'); background-position: center 20%; }
+.char-card:nth-child(1)::before { background-image: url('assets/riko-reg.webp'); }
+.char-card:nth-child(2)::before { background-image: url('assets/riko-reg-alt.webp'); }
+.char-card:nth-child(3)::before { background-image: url('assets/nanachi-underground.webp'); }
+.char-card:nth-child(4)::before { background-image: url('assets/ozen.webp'); }
+.char-card:nth-child(5)::before { background-image: url('assets/bondrewd.webp'); }
+.char-card:nth-child(6)::before { background-image: url('assets/nanachi-portrait.webp'); }
 .char-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(7,7,13,0.1) 0%, rgba(7,7,13,0.85) 60%, rgba(7,7,13,0.95) 100%);
+  background: linear-gradient(180deg,
+    rgba(5,5,10,0.1) 0%,
+    rgba(5,5,10,0.7) 40%,
+    rgba(5,5,10,0.95) 100%
+  );
   z-index: 1;
 }
-.char-card:hover::before { transform: scale(1.08); }
+.char-card:hover::before { transform: scale(1.1); }
 .char-card:hover {
   border-color: rgba(139,92,246,0.3);
   transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(139,92,246,0.15);
+  box-shadow: 0 20px 60px rgba(139,92,246,0.12);
 }
 .char-card > * { position: relative; z-index: 2; }
-.char-avatar {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  margin-bottom: 1rem;
-  object-fit: cover;
-  border: 2px solid rgba(139,92,246,0.4);
-  box-shadow: 0 0 20px rgba(139,92,246,0.2);
-}
+
 .char-avatar-placeholder {
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
   border-radius: 50%;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
-  border: 2px solid rgba(255,255,255,0.1);
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 2px solid rgba(255,255,255,0.15);
+  color: #fff;
 }
-.char-name { font-size: 1.3rem; font-weight: 400; margin-bottom: 0.3rem; color: #fff; }
-.char-title { font-size: 0.85rem; color: #8b5cf6; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
-.char-desc { color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; }
+.char-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  color: #fff;
+}
+.char-title {
+  font-size: 0.8rem;
+  color: #8b5cf6;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.char-desc { color: #94a3b8; font-size: 0.85rem; line-height: 1.6; opacity: 0; max-height: 0; transition: all 0.5s ease; }
+.char-card:hover .char-desc { opacity: 1; max-height: 100px; }
+
+/* ═══════════════════════════════════════════════════════════
+   CHARACTER MODAL — Full-screen overlay with GIF
+   ═══════════════════════════════════════════════════════════ */
+.char-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.char-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.char-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,5,10,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 0.6s ease;
+}
+
+.char-modal-content {
+  position: relative;
+  display: flex;
+  width: min(95vw, 1200px);
+  height: min(85vh, 700px);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+  transform: scale(0.9) translateY(40px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.char-modal.active .char-modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* GIF panel (left) */
+.modal-gif-panel {
+  flex: 1.3;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+.modal-gif-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal-gif-panel .gif-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 50%, rgba(5,5,10,0.9) 100%);
+  pointer-events: none;
+}
+.modal-gif-panel .gif-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(0deg, rgba(5,5,10,0.6) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Info panel (right) */
+.modal-info-panel {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow-y: auto;
+}
+.modal-info-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(45,212,191,0.04));
+  pointer-events: none;
+}
+.modal-info-panel > * { position: relative; z-index: 1; }
+
+.modal-char-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.modal-char-title {
+  font-size: 0.9rem;
+  color: #8b5cf6;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+.modal-char-bio {
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.modal-char-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.modal-char-trait {
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(139,92,246,0.2);
+  color: #8b5cf6;
+  background: rgba(139,92,246,0.08);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  background: rgba(5,5,10,0.6);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+.modal-close:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.3);
+  transform: scale(1.1);
+}
 
 /* ── Story Section ─────────────────────────────────────── */
 .story-section {
-  background: #07070d;
+  background: #05050a;
   position: relative;
+  padding: 6rem 1rem;
 }
 .story-section::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(45,212,191,0.05), transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(45,212,191,0.04), transparent 60%);
   pointer-events: none;
+}
+.story-section h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .story-content {
   max-width: 700px;
@@ -272,42 +609,28 @@ section { position: relative; padding: 6rem 1rem; }
   margin: 2rem 0;
 }
 
-/* ── Parallax Background ───────────────────────────────── */
-.parallax-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-.parallax-layer {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  will-change: transform;
-}
-.parallax-layer-1 { 
-  background: url('assets/abyss-landscape.webp') center/cover no-repeat;
-  opacity: 0.15;
-}
-.parallax-layer-2 { 
-  background: 
-    radial-gradient(2px 2px at 20% 30%, rgba(139,92,246,0.3), transparent),
-    radial-gradient(2px 2px at 40% 70%, rgba(45,212,191,0.2), transparent),
-    radial-gradient(1px 1px at 60% 20%, rgba(212,165,116,0.3), transparent),
-    radial-gradient(1px 1px at 80% 50%, rgba(139,92,246,0.2), transparent);
-}
-.parallax-layer-3 {
-  background: url('assets/cave-environment.webp') center/cover no-repeat;
-  opacity: 0.08;
-}
-
 /* ── Gallery ────────────────────────────────────────────── */
-.gallery-section { background: #0a0a14; }
+.gallery-section {
+  background: #080810;
+  padding: 6rem 1rem;
+}
+.gallery-section h2 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .gallery-item {
   position: relative;
@@ -330,7 +653,7 @@ section { position: relative; padding: 6rem 1rem; }
   position: absolute;
   bottom: 0; left: 0; right: 0;
   padding: 0.8rem;
-  background: linear-gradient(transparent, rgba(7,7,13,0.9));
+  background: linear-gradient(transparent, rgba(5,5,10,0.9));
   color: #94a3b8;
   font-size: 0.8rem;
 }
@@ -344,17 +667,75 @@ section { position: relative; padding: 6rem 1rem; }
   font-size: 0.85rem;
 }
 
-/* ── Scrollbar ──────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #07070d; }
-::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #6b3fa0; }
+/* ── Navigation ─────────────────────────────────────────── */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.4s ease;
+  background: transparent;
+}
+.nav-bar.scrolled {
+  background: rgba(5,5,10,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: #fff;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+.nav-links a:hover { color: #fff; }
 
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .char-modal-content {
+    flex-direction: column;
+    height: 90vh;
+    width: 95vw;
+  }
+  .modal-gif-panel {
+    flex: none;
+    height: 40%;
+  }
+  .modal-gif-panel .gif-gradient {
+    background: linear-gradient(0deg, rgba(5,5,10,0.9) 0%, transparent 50%);
+  }
+  .modal-info-panel {
+    padding: 1.5rem;
+  }
+  .nav-links { display: none; }
   section { padding: 4rem 1rem; }
   .char-grid { grid-template-columns: 1fr; }
-  .layer-card { padding: 1.5rem; }
+  .hotspot-label { font-size: 0.5rem; }
+}
+
+@media (max-width: 480px) {
+  .hotspot-label { font-size: 0.4rem; letter-spacing: 0.05em; }
+  .modal-char-name { font-size: 1.5rem; }
 }
 
 /* ── Reduced Motion ────────────────────────────────────── */
@@ -363,207 +744,204 @@ section { position: relative; padding: 6rem 1rem; }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-  .layer-card { opacity: 1; transform: none; }
   .story-content p { opacity: 1; transform: none; }
-  .parallax-layer { transform: none !important; }
 }
 </style>
 </head>
 <body>
 
-<!-- ── Parallax Background ─────────────────────────────── -->
-<div class="parallax-bg">
-  <div class="parallax-layer parallax-layer-1" id="pl1"></div>
-  <div class="parallax-layer parallax-layer-2" id="pl2"></div>
-  <div class="parallax-layer parallax-layer-3" id="pl3"></div>
+<!-- ── Descent Progress Bar ────────────────────────────── -->
+<div class="descent-bar" id="descentBar"></div>
+<div class="descent-depth" id="descentDepth">
+  <span class="num" id="depthNum">0</span>
+  m descendidos
 </div>
 
-<!-- ── Hero ─────────────────────────────────────────────── -->
+<!-- ── Navigation ───────────────────────────────────────── -->
+<nav class="nav-bar" id="navBar">
+  <a href="#" class="nav-logo">✦ ABISMO</a>
+  <ul class="nav-links">
+    <li><a href="#abyss-map">El Abismo</a></li>
+    <li><a href="#personajes">Personajes</a></li>
+    <li><a href="#historia">Historia</a></li>
+    <li><a href="#galeria">Galería</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════ -->
 <section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
   <canvas id="hero-canvas"></canvas>
   <div class="hero-content">
-    <h1>MADE IN ABYSS</h1>
-    <p class="subtitle">El abismo que todo lo consume</p>
+    <!-- Official SVG Logo -->
+    <img src="assets/made-in-abyss-logo.svg" alt="MADE IN ABYSS" class="hero-logo">
+    <p class="subtitle">
+      <span>El</span>&nbsp;
+      <span>abismo</span>&nbsp;
+      <span>que</span>&nbsp;
+      <span>todo</span>&nbsp;
+      <span>lo</span>&nbsp;
+      <span>consume</span>
+    </p>
   </div>
   <div class="scroll-hint">
-    <span>Descender</span>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M12 5v14M5 12l7 7 7-7"/>
-    </svg>
+    DESCENDER
+    <div class="arrow"></div>
   </div>
 </section>
 
-<!-- ── Layers ───────────────────────────────────────────── -->
-<section class="layers-section" id="capas">
-  <div class="section-inner">
+<!-- ═══════════════════════════════════════════════════════════
+     ABYSS MAP — Interactive Cross-Section
+     ═══════════════════════════════════════════════════════════ -->
+<section class="abyss-map-section" id="abyss-map">
+  <div class="abyss-map-title">
     <h2>Las Capas del Abismo</h2>
+    <p>Explora las profundidades · Toca una capa para saber más</p>
+  </div>
+  <div class="map-container">
+    <img src="assets/abyss-map.jpg" alt="Corte transversal del Abismo" id="abyssMapImg" loading="lazy">
+    <div class="map-hotspots">
 
-    <div class="layer-card" data-depth="0">
-      <div class="layer-header">
-        <span class="layer-number">Superficie</span>
-        <span class="layer-depth">0 m</span>
-      </div>
-      <div class="layer-name">La Entrada</div>
-      <div class="layer-desc">El abismo comienza en la superficie de la isla de Beoluska. Un enorme agujero de más de 10 metros de diámetro se abre en la tierra, rodeado por el Orfanato de la Cueva. Desde aquí, innumerables Silbatos han iniciado su descenso hacia lo desconocido.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-1.html" class="map-hotspot hotspot-surface" data-layer="0">
+        <span class="hotspot-label">Superficie<br>0 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="1">
-      <div class="layer-header">
-        <span class="layer-number">1.ª Capa</span>
-        <span class="layer-depth">0 – 1,350 m</span>
-      </div>
-      <div class="layer-name">Foso del Mundo Frágil</div>
-      <div class="layer-desc">La capa más superficial, bañada por la luz del sol. Un exuberante ecosistema de flora y fauna única. Aquí la Maldición del Abismo es leve: mareos y náuseas al ascender. Es el hogar de los Pinzones Carmesí y el Terror Crestado.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-2.html" class="map-hotspot hotspot-layer1" data-layer="1">
+        <span class="hotspot-label">1.ª Capa<br>0–1,350 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="2">
-      <div class="layer-header">
-        <span class="layer-number">2.ª Capa</span>
-        <span class="layer-depth">1,350 – 2,600 m</span>
-      </div>
-      <div class="layer-name">Bosque de los Colgantes</div>
-      <div class="layer-desc">Un bosque vertical donde la luz del sol apenas alcanza. Gigantescas raíces cuelgan desde las paredes del abismo. Hogar de los mortales Sanguijuelas Colgantes y el esquivo Búho de Terciopelo. La Maldición causa náuseas intensas y dolor de cabeza.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-3.html" class="map-hotspot hotspot-layer2" data-layer="2">
+        <span class="hotspot-label">2.ª Capa<br>1,350–2,600 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="3">
-      <div class="layer-header">
-        <span class="layer-number">3.ª Capa</span>
-        <span class="layer-depth">2,600 – 7,000 m</span>
-      </div>
-      <div class="layer-name">Gran Grieta</div>
-      <div class="layer-desc">Una grieta vertical de más de 4 kilómetros de profundidad. Las paredes están cubiertas de un mineral bioluminiscente que ilumina todo con un resplandor azulado. Aquí habita el temible Garra del Cielo, una de las criaturas más peligrosas del abismo.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-4.html" class="map-hotspot hotspot-layer3" data-layer="3">
+        <span class="hotspot-label">3.ª Capa<br>2,600–7,000 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="4">
-      <div class="layer-header">
-        <span class="layer-number">4.ª Capa</span>
-        <span class="layer-depth">7,000 – 12,000 m</span>
-      </div>
-      <div class="layer-name">Estanque de los Sedientos</div>
-      <div class="layer-desc">Un vasto lago subterráneo de aguas cristalinas. La presión atmosférica comienza a aumentar notablemente. La fauna aquí ha desarrollado bioluminiscencia avanzada. La Maldición causa dolor en todo el cuerpo y sangrado por los orificios.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-5.html" class="map-hotspot hotspot-layer4" data-layer="4">
+        <span class="hotspot-label">4.ª Capa<br>7,000–12,000 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="5">
-      <div class="layer-header">
-        <span class="layer-number">5.ª Capa</span>
-        <span class="layer-depth">12,000 – 15,500 m</span>
-      </div>
-      <div class="layer-name">Mar de los Cadáveres</div>
-      <div class="layer-desc">Un vasto océano subterráneo de aguas heladas, salpicado de restos de expediciones pasadas. Aquí la luz del sol ya no existe, y la temperatura desciende drásticamente. La Maldición causa alucinaciones severas y parálisis parcial del cuerpo.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-6.html" class="map-hotspot hotspot-layer5" data-layer="5">
+        <span class="hotspot-label">5.ª Capa<br>12,000–15,500 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="6">
-      <div class="layer-header">
-        <span class="layer-number">6.ª Capa</span>
-        <span class="layer-depth">15,500 – 20,000 m</span>
-      </div>
-      <div class="layer-name">Ciudad Incorruptible</div>
-      <div class="layer-desc">Las ruinas de una civilización antigua y misteriosa. Aquí la Maldición es extrema: causa pérdida de la humanidad o incluso la muerte. Solo los Silbatos Blancos, los más poderosos exploradores, han logrado llegar y regresar con vida.</div>
-      <div class="curse-bar"></div>
-    </div>
+      <a href="layers/layer-7.html" class="map-hotspot hotspot-layer6" data-layer="6">
+        <span class="hotspot-label">6.ª Capa<br>15,500–20,000 m</span>
+      </a>
 
-    <div class="layer-card" data-depth="7" style="border-color: rgba(139,92,246,0.2);">
-      <div class="layer-header">
-        <span class="layer-number">7.ª Capa</span>
-        <span class="layer-depth">20,000 – — m</span>
-      </div>
-      <div class="layer-name">El Fondo del Abismo</div>
-      <div class="layer-desc">Nadie ha llegado jamás al fondo del abismo y regresado para contarlo. Se dice que allí yace el secreto del Abismo, el verdadero origen de la Maldición, y quizás... el lugar donde todo comenzó.</div>
-      <div class="curse-bar"></div>
+      <a href="layers/layer-8.html" class="map-hotspot hotspot-layer7" data-layer="7">
+        <span class="hotspot-label">7.ª Capa<br>20,000 m — ?</span>
+      </a>
+
     </div>
   </div>
 </section>
 
-<!-- ── Characters ───────────────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════════════
+     CHARACTERS
+     ═══════════════════════════════════════════════════════════ -->
 <section class="characters-section" id="personajes">
-  <div class="section-inner">
-    <h2>Personajes</h2>
-    <div class="char-grid">
+  <h2>Personajes</h2>
+  <div class="char-grid">
 
-      <div class="char-card">
-        <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #d4a574, #8b5cf6);">R</div>
-        <div class="char-name">Riko</div>
-        <div class="char-title">Silbato de Hueso</div>
-        <div class="char-desc">Una joven huérfana que sueña con seguir los pasos de su madre, la legendaria Silbato Blanco Lyza la Annihiladora. Su mayor deseo es llegar al fondo del Abismo para reencontrarse con ella.</div>
-      </div>
-
-      <div class="char-card">
-        <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #2dd4bf, #0d9488);">R</div>
-        <div class="char-name">Reg</div>
-        <div class="char-title">Niño Robot</div>
-        <div class="char-desc">Un misterioso niño robot encontrado en el abismo. No recuerda su pasado pero posee brazos extensibles, una fuerza sobrehumana y un cañón incinerador de poder devastador. Acompaña a Riko en su viaje.</div>
-      </div>
-
-      <div class="char-card">
-        <img src="assets/nanachi.jpg" alt="Nanachi" class="char-avatar" style="object-position: center 20%;">
-        <div class="char-name">Nanachi</div>
-        <div class="char-title">Silbato Lunar</div>
-        <div class="char-desc">Una ex-humana que sobrevivió a la Maldición de la 6.ª Capa, transformándose en un ser híbrido. Posee un olfato extraordinario y un conocimiento profundo del abismo. Hábil y precavida, se convierte en una aliada invaluable.</div>
-      </div>
-
-      <div class="char-card">
-        <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #8b5cf6, #1e1b4b);">O</div>
-        <div class="char-name">Ozen</div>
-        <div class="char-title">Silbato Blanco — La Inamovible</div>
-        <div class="char-desc">Una de los cinco Silbatos Blancos conocidos. Su fuerza física es sobrehumana gracias a un artefacto del abismo. Vive en las profundidades de la 2.ª capa y actúa como guardiana del conocimiento del abismo.</div>
-      </div>
-
-      <div class="char-card">
-        <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #dc2626, #450a0a);">B</div>
-        <div class="char-name">Bondrewd</div>
-        <div class="char-title">Silbato Blanco — El Soberano del Alba</div>
-        <div class="char-desc">Un científico obsesionado con desentrañar los misterios del Abismo. Sus métodos son moralmente cuestionables, pero su conocimiento sobre las reliquias y la Maldición es incomparable. Opera desde su laboratorio en la 5.ª capa.</div>
-      </div>
-
-      <div class="char-card">
-        <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #f59e0b, #78350f);">P</div>
-        <div class="char-name">Prushka</div>
-        <div class="char-title">La Última Luz</div>
-        <div class="char-desc">Una niña misteriosa vinculada a Bondrewd. Su historia está entrelazada con los sacrificios necesarios para avanzar en la comprensión del Abismo y la verdadera naturaleza de la Maldición.</div>
-      </div>
-
+    <div class="char-card" data-char="riko">
+      <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #d4a574, #8b5cf6);">R</div>
+      <div class="char-name">Riko</div>
+      <div class="char-title">Silbato de Hueso</div>
+      <div class="char-desc">Huérfana que sueña con ser Silbato Blanco como su madre.</div>
     </div>
+
+    <div class="char-card" data-char="reg">
+      <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #2dd4bf, #0d9488);">R</div>
+      <div class="char-name">Reg</div>
+      <div class="char-title">Niño Robot</div>
+      <div class="char-desc">Robot con poderes misteriosos hallado en el abismo.</div>
+    </div>
+
+    <div class="char-card" data-char="nanachi">
+      <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #f59e0b, #78350f);">N</div>
+      <div class="char-name">Nanachi</div>
+      <div class="char-title">Silbato Lunar</div>
+      <div class="char-desc">Ex-humana que sobrevivió a la Maldición de la 6.ª Capa.</div>
+    </div>
+
+    <div class="char-card" data-char="ozen">
+      <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #8b5cf6, #1e1b4b);">O</div>
+      <div class="char-name">Ozen</div>
+      <div class="char-title">Silbato Blanco — La Inamovible</div>
+      <div class="char-desc">Guardiana del conocimiento del abismo en la 2.ª capa.</div>
+    </div>
+
+    <div class="char-card" data-char="bondrewd">
+      <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #dc2626, #450a0a);">B</div>
+      <div class="char-name">Bondrewd</div>
+      <div class="char-title">Silbato Blanco — El Soberano del Alba</div>
+      <div class="char-desc">Científico obsesionado con los misterios del Abismo.</div>
+    </div>
+
+    <div class="char-card" data-char="prushka">
+      <div class="char-avatar-placeholder" style="background: linear-gradient(135deg, #f472b6, #831843);">P</div>
+      <div class="char-name">Prushka</div>
+      <div class="char-title">La Última Luz</div>
+      <div class="char-desc">Niña misteriosa vinculada al legado de Bondrewd.</div>
+    </div>
+
   </div>
 </section>
 
-<!-- ── Story ─────────────────────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════════════
+     CHARACTER MODAL
+     ═══════════════════════════════════════════════════════════ -->
+<div class="char-modal" id="charModal">
+  <div class="char-modal-backdrop" id="modalBackdrop"></div>
+  <div class="char-modal-content">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-gif-panel" id="modalGifPanel">
+      <img id="modalGif" src="" alt="Character GIF">
+      <div class="gif-gradient"></div>
+      <div class="gif-accent"></div>
+    </div>
+    <div class="modal-info-panel">
+      <div class="modal-char-name" id="modalName"></div>
+      <div class="modal-char-title" id="modalTitle"></div>
+      <div class="modal-char-bio" id="modalBio"></div>
+      <div class="modal-char-traits" id="modalTraits"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STORY
+     ═══════════════════════════════════════════════════════════ -->
 <section class="story-section" id="historia">
-  <div class="section-inner">
-    <h2>La Historia</h2>
-    <div class="story-content">
-      <p>En una remota isla del Mar de Beoluska, un enorme agujero de más de 1.000 metros de diámetro se abre en la tierra. Es el Abismo, el único lugar inexplorado del mundo.</p>
-
-      <p>Durante siglos, exploradores conocidos como Silbatos han descendido a sus profundidades en busca de reliquias, conocimiento y tesoros. Pero el Abismo es implacable: cuanto más se desciende, más difícil es regresar.</p>
-
-      <div class="story-quote">
-        "El abismo devora todo lo que cae en él. Pero también concede dones a quienes se atreven a explorarlo."
-      </div>
-
-      <p>Riko, una huérfana que sueña con convertirse en Silbato Blanco como su madre Lyza, descubre un día a un niño robot en las profundidades. Sin memoria de su pasado, el niño —a quien ella llama Reg— posee poderes misteriosos que podrían ser la clave para sobrevivir en el Abismo.</p>
-
-      <p>Juntos, Riko y Reg inician el viaje más peligroso de todos: descender hasta el fondo del Abismo, donde nadie ha llegado jamás y ha regresado para contarlo. Enfrentándose a criaturas mortales, la Maldición del Abismo, y los oscuros secretos de los Silbatos Blancos, su viaje se convierte en una historia de amistad, sacrificio y descubrimiento.</p>
+  <h2>La Historia</h2>
+  <div class="story-content">
+    <p>En una remota isla del Mar de Beoluska, un enorme agujero de más de 1.000 metros de diámetro se abre en la tierra. Es el Abismo, el único lugar inexplorado del mundo.</p>
+    <p>Durante siglos, exploradores conocidos como Silbatos han descendido a sus profundidades en busca de reliquias, conocimiento y tesoros. Pero el Abismo es implacable: cuanto más se desciende, más difícil es regresar.</p>
+    <div class="story-quote">
+      "El abismo devora todo lo que cae en él. Pero también concede dones a quienes se atreven a explorarlo."
     </div>
+    <p>Riko, una huérfana que sueña con convertirse en Silbato Blanco como su madre Lyza, descubre un día a un niño robot en las profundidades. Sin memoria de su pasado, el niño —a quien ella llama Reg— posee poderes misteriosos que podrían ser la clave para sobrevivir en el Abismo.</p>
+    <p>Juntos, Riko y Reg inician el viaje más peligroso de todos: descender hasta el fondo del Abismo, donde nadie ha llegado jamás y ha regresado para contarlo. Enfrentándose a criaturas mortales, la Maldición del Abismo, y los oscuros secretos de los Silbatos Blancos, su viaje se convierte en una historia de amistad, sacrificio y descubrimiento.</p>
   </div>
 </section>
 
-<!-- ── Gallery ──────────────────────────────────────────── -->
+<!-- ═══════════════════════════════════════════════════════════
+     GALLERY
+     ═══════════════════════════════════════════════════════════ -->
 <section class="gallery-section" id="galeria">
-  <div class="section-inner">
-    <h2>Galería del Abismo</h2>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="assets/abyss-landscape.webp" alt="Abismo" loading="lazy"><span class="gallery-label">El Abismo desde lo alto</span></div>
-      <div class="gallery-item"><img src="assets/cave-environment.webp" alt="Cueva" loading="lazy"><span class="gallery-label">Cuevas del Abismo</span></div>
-      <div class="gallery-item"><img src="assets/nanachi-mitty-hug.webp" alt="Nanachi y Mitty" loading="lazy"><span class="gallery-label">Nanachi y Mitty</span></div>
-      <div class="gallery-item"><img src="assets/nanachi-bunny.webp" alt="Nanachi" loading="lazy"><span class="gallery-label">Nanachi</span></div>
-      <div class="gallery-item"><img src="assets/nanachi-mitty-2.webp" alt="Nanachi y Mitty" loading="lazy"><span class="gallery-label">El refugio de Nanachi</span></div>
-      <div class="gallery-item"><img src="assets/abyss.gif" alt="Abyss GIF" loading="lazy"><span class="gallery-label">Profundidades del Abismo</span></div>
-    </div>
+  <h2>Galería del Abismo</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="assets/abyss-landscape.webp" alt="Abismo" loading="lazy"><span class="gallery-label">El Abismo desde lo alto</span></div>
+    <div class="gallery-item"><img src="assets/cave-environment.webp" alt="Cueva" loading="lazy"><span class="gallery-label">Cuevas del Abismo</span></div>
+    <div class="gallery-item"><img src="assets/nanachi-mitty-hug.webp" alt="Nanachi y Mitty" loading="lazy"><span class="gallery-label">Nanachi y Mitty</span></div>
+    <div class="gallery-item"><img src="assets/nanachi-bunny.webp" alt="Nanachi" loading="lazy"><span class="gallery-label">Nanachi</span></div>
+    <div class="gallery-item"><img src="assets/nanachi-mitty-2.webp" alt="Nanachi y Mitty" loading="lazy"><span class="gallery-label">El refugio de Nanachi</span></div>
+    <div class="gallery-item"><img src="assets/abyss.gif" alt="Abyss GIF" loading="lazy"><span class="gallery-label">Profundidades del Abismo</span></div>
   </div>
 </section>
 
@@ -573,7 +951,125 @@ section { position: relative; padding: 6rem 1rem; }
 </footer>
 
 <script>
-// ── Particle System ──────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  CHARACTER DATA
+// ══════════════════════════════════════════════════════════════
+const CHARACTERS = {
+  riko: {
+    name: 'Riko',
+    title: 'Silbato de Hueso',
+    gif: 'assets/riko.gif',
+    bio: 'Una joven huérfana del Orfanato de la Cueva en Orth. Desde pequeña soñó con seguir los pasos de su madre, la legendaria Silbato Blanco Lyza la Aniquiladora. A pesar de su apariencia frágil, posee una curiosidad insaciable y una determinación inquebrantable. Es una exploradora nata con un profundo conocimiento del Abismo, heredado de los diarios de su madre. Su mayor deseo es llegar al fondo del Abismo para reencontrarse con ella y descubrir la verdad que esconde.',
+    traits: ['Curiosa', 'Determinada', 'Valiente', 'Silbato Rojo']
+  },
+  reg: {
+    name: 'Reg',
+    title: 'Niño Robot',
+    gif: 'assets/reg.gif',
+    bio: 'Un misterioso niño robot encontrado en las profundidades del Abismo por Riko. No recuerda nada de su pasado, ni de dónde viene ni quién lo creó. Sus brazos son extensibles y poseen una fuerza sobrehumana. En su pecho guarda un cañón incinerador de poder devastador, que solo usa en situaciones extremas. A pesar de ser una máquina, muestra emociones humanas y desarrolla un vínculo profundo con Riko. Es leal, protector y su origen está directamente conectado con el mayor secreto del Abismo.',
+    traits: ['Protector', 'Leal', 'Misterioso', 'Fuerza sobrehumana']
+  },
+  nanachi: {
+    name: 'Nanachi',
+    title: 'Silbato Lunar',
+    gif: 'assets/nanachi.gif',
+    bio: 'Una ex-humana que sobrevivió a la Maldición de la 6.ª Capa, transformándose en un ser híbrido con características de conejo. Posee un olfato extraordinario que le permite detectar criaturas y peligros a grandes distancias. Es una experta en alquimia y conoce cada rincón del Abismo. Inicialmente solitaria y desconfiada, su encuentro con Riko y Reg reaviva su esperanza. Su pasado con Mitty, su amiga transformada por la Maldición, es una de las historias más trágicas y conmovedoras del Abismo.',
+    traits: ['Precavida', 'Experta en alquimia', 'Olfato supremo', 'Silbato Lunar']
+  },
+  ozen: {
+    name: 'Ozen',
+    title: 'Silbato Blanco — La Inamovible',
+    gif: 'assets/ozen.gif',
+    bio: 'Una de las cinco Silbatos Blancos conocidos, los exploradores de más alto rango. Su fuerza física es legendaria: puede levantar rocas del tamaño de una persona con un solo brazo. Este poder proviene de un artefacto del abismo que lleva integrado en su cuerpo. Vive en el Campamento de Observación en la 2.ª Capa, donde entrena a jóvenes exploradores. Impone respeto y miedo a partes iguales. Su apodo "La Inamovible" refleja tanto su fuerza como su inquebrantable voluntad de proteger el conocimiento del Abismo.',
+    traits: ['Imponente', 'Sabia', 'Fuerza descomunal', 'Silbato Blanco']
+  },
+  bondrewd: {
+    name: 'Bondrewd',
+    title: 'Silbato Blanco — El Soberano del Alba',
+    gif: 'assets/bondrewd.gif',
+    bio: 'Un genio científico obsesionado con desentrañar los misterios del Abismo. Su inteligencia es tan vasta como su falta de escrúpulos. Opera desde Idofront, una fortaleza en la frontera entre la 5.ª y 6.ª Capa. Su conocimiento sobre las reliquias y la Maldición es incomparable, pero sus métodos han traspasado todos los límites de la moral. Utiliza tecnología y artefactos para multiplicar su conciencia en múltiples cuerpos. Es a la vez el mayor aliado y el más temible enemigo para cualquier explorador.',
+    traits: ['Genio científico', 'Implacable', 'Visionario', 'Silbato Blanco']
+  },
+  prushka: {
+    name: 'Prushka',
+    title: 'La Última Luz',
+    gif: 'assets/prushka.gif',
+    bio: 'Una niña misteriosa que aparece en Idofront, vinculada directamente a Bondrewd. Su presencia en el Abismo esconde secretos que cambiarán para siempre la comprensión de la Maldición y las reliquias. A pesar de su corta edad, demuestra una madurez y una fortaleza de espíritu extraordinarias. Su conexión con Riko va más allá de lo casual, y su papel en la historia es fundamental para el avance hacia las capas más profundas del Abismo.',
+    traits: ['Inocente', 'Fuerte de espíritu', 'Silbato Blanco', 'Vínculo único']
+  }
+};
+
+// Fallback GIFs in case local files fail
+const FALLBACK_GIFS = {
+  prushka: 'https://media.tenor.com/9L5zr5UQoRoAAAAM/prushka-made-in-abyss.gif'
+};
+
+// ══════════════════════════════════════════════════════════════
+//  CHARACTER MODAL
+// ══════════════════════════════════════════════════════════════
+const modal = document.getElementById('charModal');
+const backdrop = document.getElementById('modalBackdrop');
+const closeBtn = document.getElementById('modalClose');
+const modalGif = document.getElementById('modalGif');
+const modalName = document.getElementById('modalName');
+const modalTitle = document.getElementById('modalTitle');
+const modalBio = document.getElementById('modalBio');
+const modalTraits = document.getElementById('modalTraits');
+
+function openModal(charKey) {
+  const data = CHARACTERS[charKey];
+  if (!data) return;
+
+  modalName.textContent = data.name;
+  modalTitle.textContent = data.title;
+  modalBio.textContent = data.bio;
+
+  // GIF with fallback
+  modalGif.src = data.gif;
+  modalGif.onerror = function() {
+    if (FALLBACK_GIFS[charKey]) {
+      this.src = FALLBACK_GIFS[charKey];
+    } else {
+      this.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect fill="%231a1a2e" width="400" height="300"/><text x="200" y="160" text-anchor="middle" fill="%238b5cf6" font-size="20">' + data.name + '</text></svg>';
+    }
+  };
+
+  // Traits
+  modalTraits.innerHTML = '';
+  data.traits.forEach(t => {
+    const span = document.createElement('span');
+    span.className = 'modal-char-trait';
+    span.textContent = t;
+    modalTraits.appendChild(span);
+  });
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Card click handlers
+document.querySelectorAll('.char-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const charKey = card.dataset.char;
+    openModal(charKey);
+  });
+});
+
+// Close handlers
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ══════════════════════════════════════════════════════════════
+//  HERO PARTICLES
+// ══════════════════════════════════════════════════════════════
 const canvas = document.getElementById('hero-canvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -587,7 +1083,6 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Detect performance
 const perfCheck = () => {
   const mem = navigator.deviceMemory || 4;
   const cores = navigator.hardwareConcurrency || 4;
@@ -600,11 +1095,11 @@ class Particle {
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.size = Math.random() * (isLowPerf ? 1.5 : 3) + 0.5;
-    this.speedX = (Math.random() - 0.5) * (isLowPerf ? 0.3 : 0.5);
-    this.speedY = (Math.random() - 0.5) * (isLowPerf ? 0.3 : 0.5);
-    this.opacity = Math.random() * 0.6 + 0.1;
-    this.hue = Math.random() * 60 + 240; // blue-purple range
+    this.size = Math.random() * (isLowPerf ? 1.5 : 2.5) + 0.5;
+    this.speedX = (Math.random() - 0.5) * (isLowPerf ? 0.2 : 0.3);
+    this.speedY = (Math.random() - 0.5) * (isLowPerf ? 0.2 : 0.3);
+    this.opacity = Math.random() * 0.5 + 0.05;
+    this.hue = Math.random() * 60 + 240;
   }
   update() {
     this.x += this.speedX;
@@ -613,7 +1108,7 @@ class Particle {
     const dy = mouseY - this.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist < 150) {
-      const force = (150 - dist) / 150 * 0.5;
+      const force = (150 - dist) / 150 * 0.3;
       this.x -= dx / dist * force;
       this.y -= dy / dist * force;
     }
@@ -623,7 +1118,7 @@ class Particle {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `hsla(${this.hue}, 60%, 60%, ${this.opacity})`;
+    ctx.fillStyle = `hsla(${this.hue}, 50%, 55%, ${this.opacity})`;
     ctx.fill();
   }
 }
@@ -641,7 +1136,7 @@ function drawConnections() {
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `hsla(260, 40%, 60%, ${(1 - dist / 120) * 0.15})`;
+        ctx.strokeStyle = `hsla(260, 40%, 60%, ${(1 - dist / 120) * 0.1})`;
         ctx.lineWidth = 0.5;
         ctx.stroke();
       }
@@ -662,41 +1157,62 @@ canvas.addEventListener('mousemove', e => {
   mouseY = e.clientY;
 });
 
-// ── Scroll Intersection Observer ─────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  PARALLAX & DESCENT TRACKING
+// ══════════════════════════════════════════════════════════════
+const heroBg = document.getElementById('heroBg');
+const navBar = document.getElementById('navBar');
+const descentBar = document.getElementById('descentBar');
+const depthNum = document.getElementById('depthNum');
+
+// Total scrollable height "represents" 20,000m of depth
+const MAX_DEPTH = 20000;
+
+window.addEventListener('scroll', () => {
+  const scrollY = window.pageYOffset;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = Math.min(scrollY / maxScroll, 1);
+
+  // Descent bar
+  descentBar.style.width = `${progress * 100}%`;
+
+  // Depth display
+  const depth = Math.round(progress * MAX_DEPTH);
+  depthNum.textContent = depth.toLocaleString();
+
+  // Hero background parallax (slower)
+  heroBg.style.transform = `translateY(${scrollY * 0.15}px)`;
+
+  // Nav bar
+  if (scrollY > 100) {
+    navBar.classList.add('scrolled');
+  } else {
+    navBar.classList.remove('scrolled');
+  }
+});
+
+// ══════════════════════════════════════════════════════════════
+//  INTERSECTION OBSERVER
+// ══════════════════════════════════════════════════════════════
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.15 });
 
-// Observe layer cards
-document.querySelectorAll('.layer-card').forEach(el => observer.observe(el));
-
-// Observe story paragraphs
+// Story paragraphs
 document.querySelectorAll('.story-content p').forEach(el => observer.observe(el));
 
-// ── Parallax ─────────────────────────────────────────────
-window.addEventListener('scroll', () => {
-  const scrolled = window.pageYOffset;
-  document.getElementById('pl1').style.transform = `translateY(${scrolled * 0.15}px)`;
-  document.getElementById('pl2').style.transform = `translateY(${scrolled * 0.08}px)`;
-  document.getElementById('pl3').style.transform = `translateY(${scrolled * 0.05}px)`;
-});
-
-// ── Mouse Glow on Cards ──────────────────────────────────
-document.querySelectorAll('.char-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
-    card.style.setProperty('--my', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+// ══════════════════════════════════════════════════════════════
+//  ABYSS MAP HOTSPOT PREVIEW
+// ══════════════════════════════════════════════════════════════
+document.querySelectorAll('.map-hotspot').forEach(hotspot => {
+  hotspot.addEventListener('click', function(e) {
+    // The link will navigate naturally, no need to prevent default
+    // But we can add a subtle transition effect
   });
-});
-
-// ── Page Visibility Pause ────────────────────────────────
-document.addEventListener('visibilitychange', () => {
-  // Pause/resume handled by requestAnimationFrame stopping naturally
 });
 </script>
 </body>
