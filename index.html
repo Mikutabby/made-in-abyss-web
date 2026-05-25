@@ -25,6 +25,7 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
   --layer-color: #8b5cf6;
   --layer-glow: rgba(139,92,246,0.15);
   --layer-bg-tint: rgba(139,92,246,0.03);
+  --layer-popup-bg: rgba(139,92,246,0.08);
   --layer-gradient: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
   --layer-nav-bg: rgba(5,5,10,0.85);
   --transition-theme: 0.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -33,14 +34,14 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
 body { transition: background var(--transition-theme), color var(--transition-theme); }
 
 /* Layer body classes — each changes the entire page accent */
-body.layer-surface  { --layer-color: #4ade80; --layer-glow: rgba(74,222,128,0.12); --layer-bg-tint: rgba(74,222,128,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #4ade80, #22c55e); }
-body.layer-layer1   { --layer-color: #22c55e; --layer-glow: rgba(34,197,94,0.12); --layer-bg-tint: rgba(34,197,94,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #22c55e, #16a34a); }
-body.layer-layer2   { --layer-color: #2dd4bf; --layer-glow: rgba(45,212,191,0.12); --layer-bg-tint: rgba(45,212,191,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #2dd4bf, #0d9488); }
-body.layer-layer3   { --layer-color: #8b5cf6; --layer-glow: rgba(139,92,246,0.15); --layer-bg-tint: rgba(139,92,246,0.04); --layer-gradient: linear-gradient(135deg, #e2e8f0, #8b5cf6, #6d28d9); }
-body.layer-layer4   { --layer-color: #3b82f6; --layer-glow: rgba(59,130,246,0.12); --layer-bg-tint: rgba(59,130,246,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #3b82f6, #1d4ed8); }
-body.layer-layer5   { --layer-color: #f59e0b; --layer-glow: rgba(245,158,11,0.12); --layer-bg-tint: rgba(245,158,11,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #f59e0b, #d97706); }
-body.layer-layer6   { --layer-color: #d946ef; --layer-glow: rgba(217,70,239,0.12); --layer-bg-tint: rgba(217,70,239,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #d946ef, #a21caf); }
-body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12); --layer-bg-tint: rgba(239,68,68,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #ef4444, #b91c1c); }
+body.layer-surface  { --layer-color: #4ade80; --layer-glow: rgba(74,222,128,0.12); --layer-bg-tint: rgba(74,222,128,0.04); --layer-popup-bg: rgba(74,222,128,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #4ade80, #22c55e); }
+body.layer-layer1   { --layer-color: #22c55e; --layer-glow: rgba(34,197,94,0.12); --layer-bg-tint: rgba(34,197,94,0.04); --layer-popup-bg: rgba(34,197,94,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #22c55e, #16a34a); }
+body.layer-layer2   { --layer-color: #2dd4bf; --layer-glow: rgba(45,212,191,0.12); --layer-bg-tint: rgba(45,212,191,0.04); --layer-popup-bg: rgba(45,212,191,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #2dd4bf, #0d9488); }
+body.layer-layer3   { --layer-color: #8b5cf6; --layer-glow: rgba(139,92,246,0.15); --layer-bg-tint: rgba(139,92,246,0.05); --layer-popup-bg: rgba(139,92,246,0.12); --layer-gradient: linear-gradient(135deg, #e2e8f0, #8b5cf6, #6d28d9); }
+body.layer-layer4   { --layer-color: #3b82f6; --layer-glow: rgba(59,130,246,0.12); --layer-bg-tint: rgba(59,130,246,0.04); --layer-popup-bg: rgba(59,130,246,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #3b82f6, #1d4ed8); }
+body.layer-layer5   { --layer-color: #f59e0b; --layer-glow: rgba(245,158,11,0.12); --layer-bg-tint: rgba(245,158,11,0.04); --layer-popup-bg: rgba(245,158,11,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #f59e0b, #d97706); }
+body.layer-layer6   { --layer-color: #d946ef; --layer-glow: rgba(217,70,239,0.12); --layer-bg-tint: rgba(217,70,239,0.04); --layer-popup-bg: rgba(217,70,239,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #d946ef, #a21caf); }
+body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12); --layer-bg-tint: rgba(239,68,68,0.04); --layer-popup-bg: rgba(239,68,68,0.1); --layer-gradient: linear-gradient(135deg, #e2e8f0, #ef4444, #b91c1c); }
 
 /* ── Scrollbar (uses CSS variables) ──────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
@@ -197,13 +198,15 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   transition: background var(--transition-theme);
 }
 
-/* The abyss image — full width, natural height, scrolls with page */
+/* The abyss image — fills the entire section as a background */
 .abyss-bg {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
   z-index: 0;
-  line-height: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 .abyss-bg::after {
   content: '';
@@ -211,8 +214,8 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   inset: 0;
   background: linear-gradient(180deg,
     rgba(5,5,10,0.3) 0%,
-    rgba(5,5,10,0.1) 30%,
-    rgba(5,5,10,0.1) 70%,
+    rgba(5,5,10,0.05) 25%,
+    rgba(5,5,10,0.05) 70%,
     rgba(5,5,10,0.6) 100%
   );
   pointer-events: none;
@@ -220,18 +223,16 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
 }
 .abyss-bg-img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
   display: block;
-  opacity: 0.7;
-  transition: opacity 0.5s ease;
+  opacity: 0.55;
 }
 
 /* Abyss title — centered over the image */
 .abyss-map-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
   z-index: 2;
   text-align: center;
   padding: 6rem 1rem 2rem;
@@ -290,127 +291,125 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
 }
 
 /* ═══════════════════════════════════════════════════════════
-   LAYER POPUP — Fixed overlay card
+   LAYER CARDS — Zigzag hover cards along the abyss
    ═══════════════════════════════════════════════════════════ */
-.layer-overlay {
-  position: fixed;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 50;
-  pointer-events: none;
-  width: min(90vw, 600px);
-}
-
-.layer-popup {
-  background: rgba(5,5,10,0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 1.2rem;
-  padding: 1.8rem 2rem;
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  position: relative;
-  overflow: hidden;
-}
-.layer-popup::before {
-  content: '';
+.layer-card {
   position: absolute;
-  inset: 0;
-  background: var(--layer-bg-tint);
-  transition: background var(--transition-theme);
-  pointer-events: none;
-}
-.layer-popup.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-.layer-popup.exiting {
-  opacity: 0;
-  transform: translateY(20px) scale(0.95);
-}
-
-.popup-number {
-  font-family: 'Cinzel', serif;
-  font-size: 3.5rem;
-  font-weight: 900;
-  color: var(--layer-color);
-  line-height: 1;
-  min-width: 60px;
-  text-align: center;
-  transition: color var(--transition-theme);
-  opacity: 0.6;
-}
-
-.popup-body { flex: 1; position: relative; z-index: 1; }
-
-.popup-label {
-  font-size: 0.7rem;
-  color: var(--layer-color);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-bottom: 0.2rem;
-  transition: color var(--transition-theme);
-  font-weight: 500;
-}
-.popup-name {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.15rem;
-}
-.popup-depth {
-  font-size: 0.8rem;
-  color: var(--layer-color);
-  opacity: 0.6;
-  font-family: monospace;
-  margin-bottom: 0.6rem;
-  transition: color var(--transition-theme);
-}
-.popup-desc {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  margin-bottom: 0.8rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.popup-stats {
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
   display: flex;
-  gap: 1.2rem;
-  flex-wrap: wrap;
+  align-items: center;
 }
-.popup-stat {
+.layer-zone:nth-child(even) .layer-card { right: 1.5rem; flex-direction: row-reverse; }
+.layer-zone:nth-child(odd)  .layer-card { left: 1.5rem; flex-direction: row; }
+
+/* Trigger dot — tiny circle with number */
+.layer-card-trigger {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(5,5,10,0.85);
+  border: 1.5px solid var(--layer-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--layer-color);
+  flex-shrink: 0;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  animation: cardPulse 4s ease-in-out infinite;
+}
+@keyframes cardPulse {
+  0%, 100% { box-shadow: 0 0 0px rgba(0,0,0,0); }
+  50% { box-shadow: 0 0 12px var(--layer-glow); }
+}
+.layer-card:hover .layer-card-trigger {
+  transform: scale(1.25);
+  box-shadow: 0 0 24px var(--layer-glow);
+  background: rgba(5,5,10,0.95);
+}
+
+/* Body — slides out on hover */
+.layer-card-body {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(5,5,10,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--layer-color);
+  border-radius: 0.7rem;
+  padding: 0.4rem 0.7rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 20px var(--layer-glow);
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+/* Right-side cards: body expands to the left */
+.layer-zone:nth-child(even) .layer-card-body {
+  margin-right: 0.5rem;
+  transform-origin: right center;
+}
+/* Left-side cards: body expands to the right */
+.layer-zone:nth-child(odd) .layer-card-body {
+  margin-left: 0.5rem;
+  transform-origin: left center;
+}
+
+.layer-card:hover .layer-card-body {
+  opacity: 1;
+  pointer-events: auto;
+  max-width: 280px;
+  padding: 0.4rem 0.7rem;
+}
+
+/* Card image — small circular thumbnail */
+.layer-card-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.layer-card-info {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  line-height: 1.3;
+  overflow: hidden;
 }
-.popup-stat-label {
+.layer-card-label {
   font-size: 0.6rem;
-  color: #475569;
+  color: var(--layer-color);
   letter-spacing: 0.15em;
   text-transform: uppercase;
-}
-.popup-stat-value {
-  font-size: 0.8rem;
-  color: var(--layer-color);
   transition: color var(--transition-theme);
+  opacity: 0.8;
 }
-
+.layer-card-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  color: #fff;
+  font-weight: 500;
+}
+.layer-card-depth {
+  font-size: 0.65rem;
+  color: #64748b;
+  font-family: monospace;
+}
 .popup-cta {
   display: inline-block;
-  margin-top: 0.8rem;
   font-size: 0.75rem;
   color: var(--layer-color);
   text-decoration: none;
@@ -876,15 +875,22 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   .nav-links { display: none; }
   section { padding: 4rem 1rem; }
   .char-grid { grid-template-columns: 1fr; }
-  .layer-overlay { bottom: 1rem; width: min(95vw, 400px); }
-  .layer-popup { padding: 1.2rem 1.5rem; gap: 1rem; }
-  .popup-number { font-size: 2.5rem; min-width: 40px; }
-  .popup-desc { -webkit-line-clamp: 2; }
+  .layer-card-trigger { width: 30px; height: 30px; font-size: 0.65rem; }
+  .layer-zone:nth-child(even) .layer-card { right: 0.8rem; }
+  .layer-zone:nth-child(odd)  .layer-card { left: 0.8rem; }
+  .layer-card-body { max-width: 0 !important; padding: 0 !important; }
+  .layer-card:hover .layer-card-body {
+    max-width: 200px !important;
+    padding: 0.3rem 0.5rem !important;
+  }
+  .layer-card-img { width: 28px; height: 28px; }
+  .layer-card-name { font-size: 0.7rem; }
+  .layer-card-depth { font-size: 0.6rem; }
+  .layer-card-label { font-size: 0.55rem; }
 }
 
 @media (max-width: 480px) {
   .modal-char-name { font-size: 1.5rem; }
-  .popup-number { font-size: 2rem; min-width: 30px; }
 }
 
 /* ── Reduced Motion ────────────────────────────────────── */
@@ -958,57 +964,134 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   <div class="layer-zones">
     <div class="layer-zone layer-zone-surface" data-layer="surface">
       <span class="layer-marker">SUPERFICIE</span>
+      <div class="layer-card" data-layer-idx="0">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">0</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/riko.gif" alt="Riko">
+          <div class="layer-card-info">
+            <span class="layer-card-label">Superficie</span>
+            <span class="layer-card-name">La Entrada</span>
+            <span class="layer-card-depth">0 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer1" data-layer="layer1">
       <span class="layer-marker">I</span>
+      <div class="layer-card" data-layer-idx="1">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">I</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/reg.gif" alt="Reg">
+          <div class="layer-card-info">
+            <span class="layer-card-label">1.ª Capa</span>
+            <span class="layer-card-name">Foso del Mundo Frágil</span>
+            <span class="layer-card-depth">0 – 1,350 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer2" data-layer="layer2">
       <span class="layer-marker">II</span>
+      <div class="layer-card" data-layer-idx="2">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">II</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/nanachi.gif" alt="Nanachi">
+          <div class="layer-card-info">
+            <span class="layer-card-label">2.ª Capa</span>
+            <span class="layer-card-name">Bosque de los Colgantes</span>
+            <span class="layer-card-depth">1,350 – 2,600 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer3" data-layer="layer3">
       <span class="layer-marker">III</span>
+      <div class="layer-card" data-layer-idx="3">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">III</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/ozen.gif" alt="Ozen">
+          <div class="layer-card-info">
+            <span class="layer-card-label">3.ª Capa</span>
+            <span class="layer-card-name">Gran Grieta</span>
+            <span class="layer-card-depth">2,600 – 7,000 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer4" data-layer="layer4">
       <span class="layer-marker">IV</span>
+      <div class="layer-card" data-layer-idx="4">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">IV</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/bondrewd.gif" alt="Bondrewd">
+          <div class="layer-card-info">
+            <span class="layer-card-label">4.ª Capa</span>
+            <span class="layer-card-name">Estanque de los Sedientos</span>
+            <span class="layer-card-depth">7,000 – 12,000 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer5" data-layer="layer5">
       <span class="layer-marker">V</span>
+      <div class="layer-card" data-layer-idx="5">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">V</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/prushka.gif" alt="Prushka">
+          <div class="layer-card-info">
+            <span class="layer-card-label">5.ª Capa</span>
+            <span class="layer-card-name">Mar de los Cadáveres</span>
+            <span class="layer-card-depth">12,000 – 15,500 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer6" data-layer="layer6">
       <span class="layer-marker">VI</span>
+      <div class="layer-card" data-layer-idx="6">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">VI</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/mitty.gif" alt="Mitty">
+          <div class="layer-card-info">
+            <span class="layer-card-label">6.ª Capa</span>
+            <span class="layer-card-name">Ciudad Incorruptible</span>
+            <span class="layer-card-depth">15,500 – 20,000 m</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="layer-zone layer-zone-layer7" data-layer="layer7">
       <span class="layer-marker">VII</span>
+      <div class="layer-card" data-layer-idx="7">
+        <div class="layer-card-trigger">
+          <span class="layer-card-num">VII</span>
+        </div>
+        <div class="layer-card-body">
+          <img class="layer-card-img" src="assets/abyss.gif" alt="El Abismo">
+          <div class="layer-card-info">
+            <span class="layer-card-label">7.ª Capa</span>
+            <span class="layer-card-name">El Fondo del Abismo</span>
+            <span class="layer-card-depth">20,000 m — ?</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-
-<!-- Layer popup — fixed at bottom -->
-<div class="layer-overlay" id="layerOverlay">
-  <div class="layer-popup" id="layerPopup">
-    <div class="popup-number" id="popupNum">0</div>
-    <div class="popup-body">
-      <div class="popup-label" id="popupLabel">Superficie</div>
-      <div class="popup-name" id="popupName">La Entrada</div>
-      <div class="popup-depth" id="popupDepth">0 m</div>
-      <div class="popup-desc" id="popupDesc">El abismo comienza aquí.</div>
-      <div class="popup-stats">
-        <div class="popup-stat">
-          <span class="popup-stat-label">Maldición</span>
-          <span class="popup-stat-value" id="popupCurse">Ninguna</span>
-        </div>
-        <div class="popup-stat">
-          <span class="popup-stat-label">Peligro</span>
-          <span class="popup-stat-value" id="popupDanger">Bajo</span>
-        </div>
-      </div>
-      <a href="layers/layer-1.html" class="popup-cta" id="popupLink">Explorar capa →</a>
-    </div>
-  </div>
-</div>
-
-<!-- Color overlay for theming -->
-<div class="layer-color-overlay" id="colorOverlay"></div>
 
 <!-- ═══════════════════════════════════════════════════════════
      CHARACTERS
@@ -1079,6 +1162,38 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
       <div class="modal-char-title" id="modalTitle"></div>
       <div class="modal-char-bio" id="modalBio"></div>
       <div class="modal-char-traits" id="modalTraits"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LAYER MODAL — Shows on card click
+     ═══════════════════════════════════════════════════════════ -->
+<div class="char-modal layer-modal" id="layerModal">
+  <div class="char-modal-backdrop" id="layerModalBackdrop"></div>
+  <div class="char-modal-content">
+    <button class="modal-close" id="layerModalClose">✕</button>
+    <div class="modal-gif-panel">
+      <img id="layerModalGif" src="" alt="Layer GIF">
+      <div class="gif-gradient"></div>
+      <div class="gif-accent"></div>
+    </div>
+    <div class="modal-info-panel">
+      <div class="modal-char-name" id="layerModalName"></div>
+      <div class="modal-char-title" id="layerModalLabel" style="font-family:'Inter',sans-serif;font-size:0.8rem;color:var(--layer-color);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.2rem;"></div>
+      <div style="font-size:0.85rem;color:#64748b;font-family:monospace;margin-bottom:1rem;" id="layerModalDepth"></div>
+      <div class="modal-char-bio" id="layerModalDesc"></div>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.2rem;">
+        <div>
+          <div style="font-size:0.6rem;color:#475569;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.15rem;">Maldición</div>
+          <div style="font-size:0.85rem;color:var(--layer-color);" id="layerModalCurse"></div>
+        </div>
+        <div>
+          <div style="font-size:0.6rem;color:#475569;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.15rem;">Peligro</div>
+          <div style="font-size:0.85rem;color:var(--layer-color);" id="layerModalDanger"></div>
+        </div>
+      </div>
+      <a class="popup-cta" id="layerModalLink" href="#">Explorar capa →</a>
     </div>
   </div>
 </div>
@@ -1335,101 +1450,124 @@ const LAYER_DATA = [
     depth: '0 m', roman: '0',
     desc: 'El abismo comienza en la superficie de la isla de Beoluska. Un enorme agujero se abre en la tierra, rodeado por el Orfanato de la Cueva y la ciudad de Orth.',
     curse: 'Ninguna', danger: 'Bajo',
-    link: 'layers/layer-1.html'
+    link: 'layers/layer-1.html', char: 'Riko',
+    gif: 'assets/riko.gif'
   },
   {
     id: 'layer1', num: 'I', label: '1.ª Capa', name: 'Foso del Mundo Frágil',
     depth: '0 – 1,350 m', roman: 'I',
     desc: 'La capa más superficial, bañada aún por la luz del sol. Un ecosistema exuberante con peligros moderados. Los Silbatos Rojos entrenan aquí.',
     curse: 'Mareos y náuseas', danger: 'Bajo-Moderado',
-    link: 'layers/layer-2.html'
+    link: 'layers/layer-2.html', char: 'Reg',
+    gif: 'assets/reg.gif'
   },
   {
     id: 'layer2', num: 'II', label: '2.ª Capa', name: 'Bosque de los Colgantes',
     depth: '1,350 – 2,600 m', roman: 'II',
     desc: 'Un bosque vertical donde la luz del sol apenas alcanza. Hogar de las mortales Sanguijuelas Colgantes y el Campamento de Observación de Ozen.',
     curse: 'Náuseas intensas, dolor cabeza', danger: 'Moderado-Alto',
-    link: 'layers/layer-3.html'
+    link: 'layers/layer-3.html', char: 'Nanachi',
+    gif: 'assets/nanachi.gif'
   },
   {
     id: 'layer3', num: 'III', label: '3.ª Capa', name: 'Gran Grieta',
     depth: '2,600 – 7,000 m', roman: 'III',
     desc: 'Una grieta vertical de más de 4 km con paredes bioluminiscentes. El hogar del temible Mandíbula Escarlata. Corrientes de aire extremas.',
     curse: 'Dolor severo, sangrado', danger: 'Alto',
-    link: 'layers/layer-4.html'
+    link: 'layers/layer-4.html', char: 'Ozen',
+    gif: 'assets/ozen.gif'
   },
   {
     id: 'layer4', num: 'IV', label: '4.ª Capa', name: 'Estanque de los Sedientos',
     depth: '7,000 – 12,000 m', roman: 'IV',
     desc: 'Un vasto lago subterráneo con junglas verticales. La presión aumenta. El Jardín de las Flores de la Persistencia florece en esta capa.',
     curse: 'Dolor total, sangrado profuso', danger: 'Muy Alto',
-    link: 'layers/layer-5.html'
+    link: 'layers/layer-5.html', char: 'Bondrewd',
+    gif: 'assets/bondrewd.gif'
   },
   {
     id: 'layer5', num: 'V', label: '5.ª Capa', name: 'Mar de los Cadáveres',
     depth: '12,000 – 15,500 m', roman: 'V',
     desc: 'Un océano subterráneo helado con restos de expediciones. Aquí se encuentra Idofront, la fortaleza de Bondrewd. La luz del sol ya no existe.',
     curse: 'Alucinaciones severas, parálisis', danger: 'Extremo',
-    link: 'layers/layer-6.html'
+    link: 'layers/layer-6.html', char: 'Prushka',
+    gif: 'assets/prushka.gif'
   },
   {
     id: 'layer6', num: 'VI', label: '6.ª Capa', name: 'Ciudad Incorruptible',
     depth: '15,500 – 20,000 m', roman: 'VI',
     desc: 'Ruinas de una civilización antigua. La Maldición causa pérdida de humanidad. Solo los Silbatos Blancos han regresado con vida. El punto de no retorno.',
     curse: 'Pérdida de humanidad o muerte', danger: 'Mortal',
-    link: 'layers/layer-7.html'
+    link: 'layers/layer-7.html', char: 'Mitty',
+    gif: 'assets/mitty.gif'
   },
   {
     id: 'layer7', num: 'VII', label: '7.ª Capa', name: 'El Fondo del Abismo',
     depth: '20,000 m — ?', roman: 'VII',
     desc: 'Nadie ha regresado jamás. Se dice que allí yace el secreto definitivo del Abismo, el origen de la Maldición y las reliquias.',
     curse: 'Desconocida (mortal)', danger: '???',
-    link: 'layers/layer-8.html'
+    link: 'layers/layer-8.html', char: 'El Abismo',
+    gif: 'assets/abyss.gif'
   }
 ];
 
-// Scroll progress ranges for each layer (0 to 1)
-const LAYER_RANGES = [
-  { start: 0.00, end: 0.05 },   // surface
-  { start: 0.05, end: 0.12 },   // layer1
-  { start: 0.12, end: 0.22 },   // layer2
-  { start: 0.22, end: 0.45 },   // layer3
-  { start: 0.45, end: 0.58 },   // layer4
-  { start: 0.58, end: 0.72 },   // layer5
-  { start: 0.72, end: 0.88 },   // layer6
-  { start: 0.88, end: 1.00 }    // layer7
-];
-
 // ══════════════════════════════════════════════════════════════
-//  LAYER DETECTION & POPUP
+//  LAYER DETECTION — Scroll-based body theming
 // ══════════════════════════════════════════════════════════════
-const popupEl = document.getElementById('layerPopup');
-const popupNum = document.getElementById('popupNum');
-const popupLabel = document.getElementById('popupLabel');
-const popupName = document.getElementById('popupName');
-const popupDepth = document.getElementById('popupDepth');
-const popupDesc = document.getElementById('popupDesc');
-const popupCurse = document.getElementById('popupCurse');
-const popupDanger = document.getElementById('popupDanger');
-const popupLink = document.getElementById('popupLink');
 const colorOverlay = document.getElementById('colorOverlay');
 
 let currentLayer = -1;
-let popupTimeout = null;
+let layerRanges = [];
+
+// Calculate layer ranges dynamically from actual zone positions
+function calculateLayerRanges() {
+  const section = document.getElementById('abyss-map');
+  if (!section) return;
+  const zones = section.querySelectorAll('.layer-zone');
+  const viewportH = window.innerHeight;
+  const sectionRect = section.getBoundingClientRect();
+  const sectionH = section.offsetHeight;
+  const totalScroll = sectionH + viewportH;
+
+  layerRanges = [];
+  zones.forEach((zone, i) => {
+    const zoneRect = zone.getBoundingClientRect();
+    const zoneTop = zoneRect.top - sectionRect.top;
+    const zoneH = zone.offsetHeight;
+    const start = Math.max(0, zoneTop / totalScroll);
+    const end = Math.min(1, (zoneTop + zoneH) / totalScroll);
+    layerRanges.push({ start, end });
+  });
+
+  // If last zone ends before 100%, extend it
+  if (layerRanges.length > 0) {
+    const last = layerRanges[layerRanges.length - 1];
+    if (last.end < 0.99) last.end = 1.0;
+  }
+}
 
 function getActiveLayer(progress) {
-  for (let i = 0; i < LAYER_RANGES.length; i++) {
-    if (progress >= LAYER_RANGES[i].start && progress < LAYER_RANGES[i].end) {
+  if (layerRanges.length === 0) return -1;
+  // Before first zone starts, return -1 (no active layer)
+  if (progress < layerRanges[0].start) return -1;
+  for (let i = 0; i < layerRanges.length; i++) {
+    if (progress >= layerRanges[i].start && progress < layerRanges[i].end) {
       return i;
     }
   }
-  return LAYER_RANGES.length - 1; // last layer if at 100%
+  return layerRanges.length - 1;
 }
 
 function updateLayer(progress) {
   const active = getActiveLayer(progress);
   if (active === currentLayer) return;
   currentLayer = active;
+
+  if (active === -1) {
+    document.body.className = '';
+    colorOverlay.style.opacity = '0';
+    return;
+  }
 
   const data = LAYER_DATA[active];
 
@@ -1440,44 +1578,62 @@ function updateLayer(progress) {
   document.body.classList.add(`layer-${data.id}`);
 
   // Update color overlay
-  const hue = active * 40;
   colorOverlay.style.background = `radial-gradient(ellipse at 50% 100%, var(--layer-glow) 0%, transparent 70%)`;
   colorOverlay.style.opacity = '1';
-
-  // --- Popup transition ---
-  if (popupTimeout) clearTimeout(popupTimeout);
-
-  if (popupEl.classList.contains('active')) {
-    // Exiting animation
-    popupEl.classList.remove('active');
-    popupEl.classList.add('exiting');
-
-    popupTimeout = setTimeout(() => {
-      setPopupContent(data);
-      popupEl.classList.remove('exiting');
-      popupEl.classList.add('active');
-    }, 400);
-  } else {
-    setPopupContent(data);
-    popupEl.classList.add('active');
-  }
-
-  // Update descent depth with layer depth
-  const depthStr = data.depth.replace(/[^0-9]/g, '');
-  const depthNumVal = parseInt(depthStr) || 0;
-  document.getElementById('depthNum').textContent = depthNumVal > 0 ? depthNumVal.toLocaleString() : '0';
 }
 
-function setPopupContent(data) {
-  popupNum.textContent = data.num;
-  popupLabel.textContent = data.label;
-  popupName.textContent = data.name;
-  popupDepth.textContent = data.depth;
-  popupDesc.textContent = data.desc;
-  popupCurse.textContent = data.curse;
-  popupDanger.textContent = data.danger;
-  popupLink.href = data.link;
+// ══════════════════════════════════════════════════════════════
+//  LAYER CARD CLICK — Opens layer modal
+// ══════════════════════════════════════════════════════════════
+const layerModal = document.getElementById('layerModal');
+const layerModalBackdrop = document.getElementById('layerModalBackdrop');
+const layerModalClose = document.getElementById('layerModalClose');
+const layerModalGif = document.getElementById('layerModalGif');
+const layerModalName = document.getElementById('layerModalName');
+const layerModalLabel = document.getElementById('layerModalLabel');
+const layerModalDepth = document.getElementById('layerModalDepth');
+const layerModalDesc = document.getElementById('layerModalDesc');
+const layerModalCurse = document.getElementById('layerModalCurse');
+const layerModalDanger = document.getElementById('layerModalDanger');
+const layerModalLink = document.getElementById('layerModalLink');
+
+function openLayerModal(idx) {
+  const data = LAYER_DATA[idx];
+  if (!data) return;
+
+  layerModalGif.src = data.gif;
+  layerModalGif.alt = data.char || data.name;
+  layerModalName.textContent = data.name;
+  layerModalLabel.textContent = data.label;
+  layerModalDepth.textContent = data.depth;
+  layerModalDesc.textContent = data.desc;
+  layerModalCurse.textContent = data.curse;
+  layerModalDanger.textContent = data.danger;
+  layerModalLink.href = data.link;
+
+  layerModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
+
+function closeLayerModal() {
+  layerModal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close handlers
+layerModalClose.addEventListener('click', closeLayerModal);
+layerModalBackdrop.addEventListener('click', closeLayerModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLayerModal();
+});
+
+// Card click handlers
+document.querySelectorAll('.layer-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const idx = parseInt(card.dataset.layerIdx);
+    openLayerModal(idx);
+  });
+});
 
 // ══════════════════════════════════════════════════════════════
 //  PARALLAX, DESCENT & LAYER TRACKING
@@ -1500,9 +1656,8 @@ function onScroll() {
   // Descent bar
   descentBar.style.width = `${progress * 100}%`;
 
-  // Depth display (falls back to layer depth in updateLayer)
-  const depth = Math.round(progress * MAX_DEPTH);
-  if (currentLayer === -1) depthNum.textContent = depth.toLocaleString();
+  // Depth display — continuous based on page scroll
+  depthNum.textContent = Math.round(progress * MAX_DEPTH).toLocaleString();
 
   // Hero background parallax
   heroBg.style.transform = `translateY(${scrollY * 0.15}px)`;
@@ -1542,11 +1697,15 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // Initial call
+calculateLayerRanges();
 onScroll();
 
 // Update on resize
 window.addEventListener('resize', () => {
-  requestAnimationFrame(onScroll);
+  requestAnimationFrame(() => {
+    calculateLayerRanges();
+    onScroll();
+  });
 });
 
 // ══════════════════════════════════════════════════════════════
