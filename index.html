@@ -410,22 +410,27 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
   padding: 0.4rem 0.7rem;
 }
 
-/* Card image — colored emblem with layer number */
-.layer-card-emb {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #fff;
+/* Card image — landscape preview of the abyss at that layer */
+.layer-card-preview {
+  width: 60px;
+  height: 40px;
+  border-radius: 4px;
   flex-shrink: 0;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
-  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  background-image: url('assets/abyss-map.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: border-color var(--transition-theme);
 }
+.layer-preview-surface { background-position: 50% 2%; }
+.layer-preview-layer1   { background-position: 50% 15%; }
+.layer-preview-layer2   { background-position: 50% 28%; }
+.layer-preview-layer3   { background-position: 50% 45%; }
+.layer-preview-layer4   { background-position: 50% 58%; }
+.layer-preview-layer5   { background-position: 50% 70%; }
+.layer-preview-layer6   { background-position: 50% 85%; }
+.layer-preview-layer7   { background-position: 50% 97%; }
 .layer-card-info {
   display: flex;
   flex-direction: column;
@@ -926,7 +931,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
     max-width: 200px !important;
     padding: 0.3rem 0.5rem !important;
   }
-  .layer-card-emb { width: 28px; height: 28px; font-size: 0.6rem; }
+  .layer-card-preview { width: 44px; height: 30px; }
   .layer-card-name { font-size: 0.7rem; }
   .layer-card-depth { font-size: 0.6rem; }
   .layer-card-label { font-size: 0.55rem; }
@@ -1013,7 +1018,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">0</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#4ade80,#22c55e);">0</div>
+          <div class="layer-card-preview layer-preview-surface"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">Superficie</span>
             <span class="layer-card-name">La Entrada</span>
@@ -1030,7 +1035,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">I</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#22c55e,#16a34a);">I</div>
+          <div class="layer-card-preview layer-preview-layer1"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">1.ª Capa</span>
             <span class="layer-card-name">Foso del Mundo Frágil</span>
@@ -1047,7 +1052,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">II</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#2dd4bf,#0d9488);">II</div>
+          <div class="layer-card-preview layer-preview-layer2"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">2.ª Capa</span>
             <span class="layer-card-name">Bosque de los Colgantes</span>
@@ -1064,7 +1069,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">III</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">III</div>
+          <div class="layer-card-preview layer-preview-layer3"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">3.ª Capa</span>
             <span class="layer-card-name">Gran Grieta</span>
@@ -1081,7 +1086,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">IV</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">IV</div>
+          <div class="layer-card-preview layer-preview-layer4"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">4.ª Capa</span>
             <span class="layer-card-name">Estanque de los Sedientos</span>
@@ -1098,7 +1103,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">V</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#f59e0b,#d97706);">V</div>
+          <div class="layer-card-preview layer-preview-layer5"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">5.ª Capa</span>
             <span class="layer-card-name">Mar de los Cadáveres</span>
@@ -1115,7 +1120,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">VI</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#d946ef,#a21caf);">VI</div>
+          <div class="layer-card-preview layer-preview-layer6"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">6.ª Capa</span>
             <span class="layer-card-name">Ciudad Incorruptible</span>
@@ -1132,7 +1137,7 @@ body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
           <span class="layer-card-num">VII</span>
         </div>
         <div class="layer-card-body">
-          <div class="layer-card-emb" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">VII</div>
+          <div class="layer-card-preview layer-preview-layer7"></div>
           <div class="layer-card-info">
             <span class="layer-card-label">7.ª Capa</span>
             <span class="layer-card-name">El Fondo del Abismo</span>
