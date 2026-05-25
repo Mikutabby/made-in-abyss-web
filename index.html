@@ -20,10 +20,32 @@ body {
 /* ── Typography ────────────────────────────────────────── */
 h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
 
-/* ── Scrollbar ──────────────────────────────────────────── */
+/* ── Layer Theme System ───────────────────────────────── */
+:root {
+  --layer-color: #8b5cf6;
+  --layer-glow: rgba(139,92,246,0.15);
+  --layer-bg-tint: rgba(139,92,246,0.03);
+  --layer-gradient: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  --layer-nav-bg: rgba(5,5,10,0.85);
+  --transition-theme: 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body { transition: background var(--transition-theme), color var(--transition-theme); }
+
+/* Layer body classes — each changes the entire page accent */
+body.layer-surface  { --layer-color: #4ade80; --layer-glow: rgba(74,222,128,0.12); --layer-bg-tint: rgba(74,222,128,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #4ade80, #22c55e); }
+body.layer-layer1   { --layer-color: #22c55e; --layer-glow: rgba(34,197,94,0.12); --layer-bg-tint: rgba(34,197,94,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #22c55e, #16a34a); }
+body.layer-layer2   { --layer-color: #2dd4bf; --layer-glow: rgba(45,212,191,0.12); --layer-bg-tint: rgba(45,212,191,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #2dd4bf, #0d9488); }
+body.layer-layer3   { --layer-color: #8b5cf6; --layer-glow: rgba(139,92,246,0.15); --layer-bg-tint: rgba(139,92,246,0.04); --layer-gradient: linear-gradient(135deg, #e2e8f0, #8b5cf6, #6d28d9); }
+body.layer-layer4   { --layer-color: #3b82f6; --layer-glow: rgba(59,130,246,0.12); --layer-bg-tint: rgba(59,130,246,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #3b82f6, #1d4ed8); }
+body.layer-layer5   { --layer-color: #f59e0b; --layer-glow: rgba(245,158,11,0.12); --layer-bg-tint: rgba(245,158,11,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #f59e0b, #d97706); }
+body.layer-layer6   { --layer-color: #d946ef; --layer-glow: rgba(217,70,239,0.12); --layer-bg-tint: rgba(217,70,239,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #d946ef, #a21caf); }
+body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12); --layer-bg-tint: rgba(239,68,68,0.03); --layer-gradient: linear-gradient(135deg, #e2e8f0, #ef4444, #b91c1c); }
+
+/* ── Scrollbar (uses CSS variables) ──────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #05050a; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #8b5cf6, #2dd4bf, #d4a574); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--layer-gradient); border-radius: 3px; transition: background var(--transition-theme); }
 
 /* ═══════════════════════════════════════════════════════════
    HERO — Like the anime title screen
@@ -140,9 +162,9 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
   left: 0;
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, #8b5cf6, #2dd4bf, #d4a574, #dc2626);
+  background: var(--layer-gradient);
   z-index: 1000;
-  transition: width 0.1s linear;
+  transition: width 0.1s linear, background var(--transition-theme);
 }
 .descent-depth {
   position: fixed;
@@ -159,41 +181,71 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
 }
 .descent-depth .num {
   font-size: 2rem;
-  color: rgba(139,92,246,0.3);
+  color: var(--layer-color);
+  opacity: 0.3;
   display: block;
+  transition: color var(--transition-theme);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ABYSS MAP — Interactive cross-section
+   ABYSS — Full background with scroll-triggered popups
    ═══════════════════════════════════════════════════════════ */
 .abyss-map-section {
   position: relative;
-  padding: 8rem 1rem 12rem;
-  background: linear-gradient(180deg, #05050a 0%, #080816 40%, #05050a 100%);
+  background: #05050a;
   overflow: hidden;
-}
-.abyss-map-section::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.06), transparent 70%);
-  pointer-events: none;
+  transition: background var(--transition-theme);
 }
 
-.abyss-map-title {
-  text-align: center;
-  margin-bottom: 4rem;
+/* The abyss image — full width, natural height, scrolls with page */
+.abyss-bg {
   position: relative;
+  width: 100%;
+  z-index: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+.abyss-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(5,5,10,0.3) 0%,
+    rgba(5,5,10,0.1) 30%,
+    rgba(5,5,10,0.1) 70%,
+    rgba(5,5,10,0.6) 100%
+  );
+  pointer-events: none;
   z-index: 1;
+}
+.abyss-bg-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.7;
+  transition: opacity 0.5s ease;
+}
+
+/* Abyss title — centered over the image */
+.abyss-map-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  text-align: center;
+  padding: 6rem 1rem 2rem;
+  pointer-events: none;
 }
 .abyss-map-title h2 {
   font-family: 'Cinzel', serif;
   font-weight: 600;
   font-size: clamp(2rem, 5vw, 3.5rem);
-  background: linear-gradient(135deg, #e2e8f0, #8b5cf6, #2dd4bf);
+  background: var(--layer-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  transition: background var(--transition-theme);
 }
 .abyss-map-title p {
   color: #64748b;
@@ -203,94 +255,187 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
   text-transform: uppercase;
 }
 
-/* Map container */
-.map-container {
+/* Layer zones — invisible spacers that trigger popups */
+.layer-zones {
   position: relative;
-  max-width: 500px;
-  margin: 0 auto;
-  cursor: pointer;
+  z-index: 1;
+  padding-bottom: 20vh;
 }
-.map-container img {
+.layer-zone {
   width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 80px rgba(139,92,246,0.1);
-}
-
-/* Layer hotspots overlay */
-.map-hotspots {
-  position: absolute;
-  inset: 0;
-}
-.map-hotspot {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: 0.3rem;
-  transition: all 0.4s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+.layer-zone-surface  { height: 15vh; }
+.layer-zone-layer1   { height: 20vh; }
+.layer-zone-layer2   { height: 20vh; }
+.layer-zone-layer3   { height: 35vh; }
+.layer-zone-layer4   { height: 25vh; }
+.layer-zone-layer5   { height: 25vh; }
+.layer-zone-layer6   { height: 25vh; }
+.layer-zone-layer7   { height: 15vh; }
+
+/* Layer marker — subtle label floating in each zone */
+.layer-marker {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  color: rgba(255,255,255,0.02);
+  letter-spacing: 0.1em;
+  user-select: none;
+  pointer-events: none;
+  transition: color var(--transition-theme);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LAYER POPUP — Fixed overlay card
+   ═══════════════════════════════════════════════════════════ */
+.layer-overlay {
+  position: fixed;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+  width: min(90vw, 600px);
+}
+
+.layer-popup {
+  background: rgba(5,5,10,0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 1.2rem;
+  padding: 1.8rem 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  position: relative;
   overflow: hidden;
 }
-.map-hotspot::before {
+.layer-popup::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(45,212,191,0.04));
-  opacity: 0;
-  transition: opacity 0.4s ease;
+  background: var(--layer-bg-tint);
+  transition: background var(--transition-theme);
+  pointer-events: none;
 }
-.map-hotspot::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border: 1px solid transparent;
-  border-radius: 0.3rem;
-  transition: all 0.4s ease;
-}
-.map-hotspot:hover::before { opacity: 1; }
-.map-hotspot:hover::after {
-  border-color: transparent;
-  box-shadow: inset 0 0 30px rgba(139,92,246,0.15);
-}
-.map-hotspot:hover {
-  border-color: rgba(255,255,255,0.1);
-  transform: scale(1.02);
-}
-.map-hotspot:hover .hotspot-label {
+.layer-popup.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+}
+.layer-popup.exiting {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
 }
 
-.hotspot-label {
-  font-size: clamp(0.55rem, 1vw, 0.75rem);
-  color: rgba(255,255,255,0.4);
+.popup-number {
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--layer-color);
+  line-height: 1;
+  min-width: 60px;
+  text-align: center;
+  transition: color var(--transition-theme);
+  opacity: 0.6;
+}
+
+.popup-body { flex: 1; position: relative; z-index: 1; }
+
+.popup-label {
+  font-size: 0.7rem;
+  color: var(--layer-color);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+  transition: color var(--transition-theme);
+  font-weight: 500;
+}
+.popup-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.15rem;
+}
+.popup-depth {
+  font-size: 0.8rem;
+  color: var(--layer-color);
+  opacity: 0.6;
+  font-family: monospace;
+  margin-bottom: 0.6rem;
+  transition: color var(--transition-theme);
+}
+.popup-desc {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.popup-stats {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+.popup-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.popup-stat-label {
+  font-size: 0.6rem;
+  color: #475569;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  font-weight: 500;
-  opacity: 0;
-  transform: translateY(5px);
-  transition: all 0.4s ease;
-  text-shadow: 0 0 20px rgba(0,0,0,0.8);
-  z-index: 1;
-  text-align: center;
-  line-height: 1.3;
-  padding: 0.2rem;
+}
+.popup-stat-value {
+  font-size: 0.8rem;
+  color: var(--layer-color);
+  transition: color var(--transition-theme);
 }
 
-/* Layer positions (approximate percentages based on depth ratio) */
-.hotspot-surface  { top: 0%; height: 5%; }
-.hotspot-layer1   { top: 5%; height: 6%; }
-.hotspot-layer2   { top: 11%; height: 6%; }
-.hotspot-layer3   { top: 20%; height: 20%; }
-.hotspot-layer4   { top: 43%; height: 12%; }
-.hotspot-layer5   { top: 57%; height: 12%; }
-.hotspot-layer6   { top: 71%; height: 16%; }
-.hotspot-layer7   { top: 89%; height: 11%; }
+.popup-cta {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--layer-color);
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  transition: all 0.3s ease;
+}
+.popup-cta:hover {
+  background: var(--layer-color);
+  color: #05050a;
+  border-color: var(--layer-color);
+}
+
+/* Color overlay — subtle tint across the page */
+.layer-color-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: opacity var(--transition-theme);
+  opacity: 0;
+}
 
 /* ═══════════════════════════════════════════════════════════
    CHARACTERS — Full-page modal with GIF
@@ -683,10 +828,11 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
   background: transparent;
 }
 .nav-bar.scrolled {
-  background: rgba(5,5,10,0.85);
+  background: var(--layer-nav-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background var(--transition-theme);
 }
 .nav-logo {
   font-family: 'Cinzel', serif;
@@ -730,12 +876,15 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
   .nav-links { display: none; }
   section { padding: 4rem 1rem; }
   .char-grid { grid-template-columns: 1fr; }
-  .hotspot-label { font-size: 0.5rem; }
+  .layer-overlay { bottom: 1rem; width: min(95vw, 400px); }
+  .layer-popup { padding: 1.2rem 1.5rem; gap: 1rem; }
+  .popup-number { font-size: 2.5rem; min-width: 40px; }
+  .popup-desc { -webkit-line-clamp: 2; }
 }
 
 @media (max-width: 480px) {
-  .hotspot-label { font-size: 0.4rem; letter-spacing: 0.05em; }
   .modal-char-name { font-size: 1.5rem; }
+  .popup-number { font-size: 2rem; min-width: 30px; }
 }
 
 /* ── Reduced Motion ────────────────────────────────────── */
@@ -794,52 +943,72 @@ h1, h2, h3 { font-weight: 300; letter-spacing: 0.05em; }
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     ABYSS MAP — Interactive Cross-Section
+     ABYSS — Full background with scroll-triggered layer popups
      ═══════════════════════════════════════════════════════════ -->
 <section class="abyss-map-section" id="abyss-map">
+  <div class="abyss-bg">
+    <img src="assets/abyss-map.jpg" alt="Corte transversal del Abismo" class="abyss-bg-img" id="abyssBgImg" loading="lazy">
+  </div>
+
   <div class="abyss-map-title">
     <h2>Las Capas del Abismo</h2>
-    <p>Explora las profundidades · Toca una capa para saber más</p>
+    <p>Desciende por las profundidades · cada capa revela sus secretos</p>
   </div>
-  <div class="map-container">
-    <img src="assets/abyss-map.jpg" alt="Corte transversal del Abismo" id="abyssMapImg" loading="lazy">
-    <div class="map-hotspots">
 
-      <a href="layers/layer-1.html" class="map-hotspot hotspot-surface" data-layer="0">
-        <span class="hotspot-label">Superficie<br>0 m</span>
-      </a>
-
-      <a href="layers/layer-2.html" class="map-hotspot hotspot-layer1" data-layer="1">
-        <span class="hotspot-label">1.ª Capa<br>0–1,350 m</span>
-      </a>
-
-      <a href="layers/layer-3.html" class="map-hotspot hotspot-layer2" data-layer="2">
-        <span class="hotspot-label">2.ª Capa<br>1,350–2,600 m</span>
-      </a>
-
-      <a href="layers/layer-4.html" class="map-hotspot hotspot-layer3" data-layer="3">
-        <span class="hotspot-label">3.ª Capa<br>2,600–7,000 m</span>
-      </a>
-
-      <a href="layers/layer-5.html" class="map-hotspot hotspot-layer4" data-layer="4">
-        <span class="hotspot-label">4.ª Capa<br>7,000–12,000 m</span>
-      </a>
-
-      <a href="layers/layer-6.html" class="map-hotspot hotspot-layer5" data-layer="5">
-        <span class="hotspot-label">5.ª Capa<br>12,000–15,500 m</span>
-      </a>
-
-      <a href="layers/layer-7.html" class="map-hotspot hotspot-layer6" data-layer="6">
-        <span class="hotspot-label">6.ª Capa<br>15,500–20,000 m</span>
-      </a>
-
-      <a href="layers/layer-8.html" class="map-hotspot hotspot-layer7" data-layer="7">
-        <span class="hotspot-label">7.ª Capa<br>20,000 m — ?</span>
-      </a>
-
+  <div class="layer-zones">
+    <div class="layer-zone layer-zone-surface" data-layer="surface">
+      <span class="layer-marker">SUPERFICIE</span>
+    </div>
+    <div class="layer-zone layer-zone-layer1" data-layer="layer1">
+      <span class="layer-marker">I</span>
+    </div>
+    <div class="layer-zone layer-zone-layer2" data-layer="layer2">
+      <span class="layer-marker">II</span>
+    </div>
+    <div class="layer-zone layer-zone-layer3" data-layer="layer3">
+      <span class="layer-marker">III</span>
+    </div>
+    <div class="layer-zone layer-zone-layer4" data-layer="layer4">
+      <span class="layer-marker">IV</span>
+    </div>
+    <div class="layer-zone layer-zone-layer5" data-layer="layer5">
+      <span class="layer-marker">V</span>
+    </div>
+    <div class="layer-zone layer-zone-layer6" data-layer="layer6">
+      <span class="layer-marker">VI</span>
+    </div>
+    <div class="layer-zone layer-zone-layer7" data-layer="layer7">
+      <span class="layer-marker">VII</span>
     </div>
   </div>
 </section>
+
+<!-- Layer popup — fixed at bottom -->
+<div class="layer-overlay" id="layerOverlay">
+  <div class="layer-popup" id="layerPopup">
+    <div class="popup-number" id="popupNum">0</div>
+    <div class="popup-body">
+      <div class="popup-label" id="popupLabel">Superficie</div>
+      <div class="popup-name" id="popupName">La Entrada</div>
+      <div class="popup-depth" id="popupDepth">0 m</div>
+      <div class="popup-desc" id="popupDesc">El abismo comienza aquí.</div>
+      <div class="popup-stats">
+        <div class="popup-stat">
+          <span class="popup-stat-label">Maldición</span>
+          <span class="popup-stat-value" id="popupCurse">Ninguna</span>
+        </div>
+        <div class="popup-stat">
+          <span class="popup-stat-label">Peligro</span>
+          <span class="popup-stat-value" id="popupDanger">Bajo</span>
+        </div>
+      </div>
+      <a href="layers/layer-1.html" class="popup-cta" id="popupLink">Explorar capa →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Color overlay for theming -->
+<div class="layer-color-overlay" id="colorOverlay"></div>
 
 <!-- ═══════════════════════════════════════════════════════════
      CHARACTERS
@@ -1158,37 +1327,226 @@ canvas.addEventListener('mousemove', e => {
 });
 
 // ══════════════════════════════════════════════════════════════
-//  PARALLAX & DESCENT TRACKING
+//  LAYER DATA — For scroll-based popup + color theming
+// ══════════════════════════════════════════════════════════════
+const LAYER_DATA = [
+  {
+    id: 'surface', num: '0', label: 'Superficie', name: 'La Entrada',
+    depth: '0 m', roman: '0',
+    desc: 'El abismo comienza en la superficie de la isla de Beoluska. Un enorme agujero se abre en la tierra, rodeado por el Orfanato de la Cueva y la ciudad de Orth.',
+    curse: 'Ninguna', danger: 'Bajo',
+    link: 'layers/layer-1.html'
+  },
+  {
+    id: 'layer1', num: 'I', label: '1.ª Capa', name: 'Foso del Mundo Frágil',
+    depth: '0 – 1,350 m', roman: 'I',
+    desc: 'La capa más superficial, bañada aún por la luz del sol. Un ecosistema exuberante con peligros moderados. Los Silbatos Rojos entrenan aquí.',
+    curse: 'Mareos y náuseas', danger: 'Bajo-Moderado',
+    link: 'layers/layer-2.html'
+  },
+  {
+    id: 'layer2', num: 'II', label: '2.ª Capa', name: 'Bosque de los Colgantes',
+    depth: '1,350 – 2,600 m', roman: 'II',
+    desc: 'Un bosque vertical donde la luz del sol apenas alcanza. Hogar de las mortales Sanguijuelas Colgantes y el Campamento de Observación de Ozen.',
+    curse: 'Náuseas intensas, dolor cabeza', danger: 'Moderado-Alto',
+    link: 'layers/layer-3.html'
+  },
+  {
+    id: 'layer3', num: 'III', label: '3.ª Capa', name: 'Gran Grieta',
+    depth: '2,600 – 7,000 m', roman: 'III',
+    desc: 'Una grieta vertical de más de 4 km con paredes bioluminiscentes. El hogar del temible Mandíbula Escarlata. Corrientes de aire extremas.',
+    curse: 'Dolor severo, sangrado', danger: 'Alto',
+    link: 'layers/layer-4.html'
+  },
+  {
+    id: 'layer4', num: 'IV', label: '4.ª Capa', name: 'Estanque de los Sedientos',
+    depth: '7,000 – 12,000 m', roman: 'IV',
+    desc: 'Un vasto lago subterráneo con junglas verticales. La presión aumenta. El Jardín de las Flores de la Persistencia florece en esta capa.',
+    curse: 'Dolor total, sangrado profuso', danger: 'Muy Alto',
+    link: 'layers/layer-5.html'
+  },
+  {
+    id: 'layer5', num: 'V', label: '5.ª Capa', name: 'Mar de los Cadáveres',
+    depth: '12,000 – 15,500 m', roman: 'V',
+    desc: 'Un océano subterráneo helado con restos de expediciones. Aquí se encuentra Idofront, la fortaleza de Bondrewd. La luz del sol ya no existe.',
+    curse: 'Alucinaciones severas, parálisis', danger: 'Extremo',
+    link: 'layers/layer-6.html'
+  },
+  {
+    id: 'layer6', num: 'VI', label: '6.ª Capa', name: 'Ciudad Incorruptible',
+    depth: '15,500 – 20,000 m', roman: 'VI',
+    desc: 'Ruinas de una civilización antigua. La Maldición causa pérdida de humanidad. Solo los Silbatos Blancos han regresado con vida. El punto de no retorno.',
+    curse: 'Pérdida de humanidad o muerte', danger: 'Mortal',
+    link: 'layers/layer-7.html'
+  },
+  {
+    id: 'layer7', num: 'VII', label: '7.ª Capa', name: 'El Fondo del Abismo',
+    depth: '20,000 m — ?', roman: 'VII',
+    desc: 'Nadie ha regresado jamás. Se dice que allí yace el secreto definitivo del Abismo, el origen de la Maldición y las reliquias.',
+    curse: 'Desconocida (mortal)', danger: '???',
+    link: 'layers/layer-8.html'
+  }
+];
+
+// Scroll progress ranges for each layer (0 to 1)
+const LAYER_RANGES = [
+  { start: 0.00, end: 0.05 },   // surface
+  { start: 0.05, end: 0.12 },   // layer1
+  { start: 0.12, end: 0.22 },   // layer2
+  { start: 0.22, end: 0.45 },   // layer3
+  { start: 0.45, end: 0.58 },   // layer4
+  { start: 0.58, end: 0.72 },   // layer5
+  { start: 0.72, end: 0.88 },   // layer6
+  { start: 0.88, end: 1.00 }    // layer7
+];
+
+// ══════════════════════════════════════════════════════════════
+//  LAYER DETECTION & POPUP
+// ══════════════════════════════════════════════════════════════
+const popupEl = document.getElementById('layerPopup');
+const popupNum = document.getElementById('popupNum');
+const popupLabel = document.getElementById('popupLabel');
+const popupName = document.getElementById('popupName');
+const popupDepth = document.getElementById('popupDepth');
+const popupDesc = document.getElementById('popupDesc');
+const popupCurse = document.getElementById('popupCurse');
+const popupDanger = document.getElementById('popupDanger');
+const popupLink = document.getElementById('popupLink');
+const colorOverlay = document.getElementById('colorOverlay');
+
+let currentLayer = -1;
+let popupTimeout = null;
+
+function getActiveLayer(progress) {
+  for (let i = 0; i < LAYER_RANGES.length; i++) {
+    if (progress >= LAYER_RANGES[i].start && progress < LAYER_RANGES[i].end) {
+      return i;
+    }
+  }
+  return LAYER_RANGES.length - 1; // last layer if at 100%
+}
+
+function updateLayer(progress) {
+  const active = getActiveLayer(progress);
+  if (active === currentLayer) return;
+  currentLayer = active;
+
+  const data = LAYER_DATA[active];
+
+  // Update body class for theming
+  document.body.className = document.body.className
+    .replace(/layer-\w+/g, '')
+    .trim();
+  document.body.classList.add(`layer-${data.id}`);
+
+  // Update color overlay
+  const hue = active * 40;
+  colorOverlay.style.background = `radial-gradient(ellipse at 50% 100%, var(--layer-glow) 0%, transparent 70%)`;
+  colorOverlay.style.opacity = '1';
+
+  // --- Popup transition ---
+  if (popupTimeout) clearTimeout(popupTimeout);
+
+  if (popupEl.classList.contains('active')) {
+    // Exiting animation
+    popupEl.classList.remove('active');
+    popupEl.classList.add('exiting');
+
+    popupTimeout = setTimeout(() => {
+      setPopupContent(data);
+      popupEl.classList.remove('exiting');
+      popupEl.classList.add('active');
+    }, 400);
+  } else {
+    setPopupContent(data);
+    popupEl.classList.add('active');
+  }
+
+  // Update descent depth with layer depth
+  const depthStr = data.depth.replace(/[^0-9]/g, '');
+  const depthNumVal = parseInt(depthStr) || 0;
+  document.getElementById('depthNum').textContent = depthNumVal > 0 ? depthNumVal.toLocaleString() : '0';
+}
+
+function setPopupContent(data) {
+  popupNum.textContent = data.num;
+  popupLabel.textContent = data.label;
+  popupName.textContent = data.name;
+  popupDepth.textContent = data.depth;
+  popupDesc.textContent = data.desc;
+  popupCurse.textContent = data.curse;
+  popupDanger.textContent = data.danger;
+  popupLink.href = data.link;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PARALLAX, DESCENT & LAYER TRACKING
 // ══════════════════════════════════════════════════════════════
 const heroBg = document.getElementById('heroBg');
 const navBar = document.getElementById('navBar');
 const descentBar = document.getElementById('descentBar');
 const depthNum = document.getElementById('depthNum');
+const abyssImg = document.getElementById('abyssBgImg');
 
-// Total scrollable height "represents" 20,000m of depth
 const MAX_DEPTH = 20000;
+let lastScrollY = 0;
+let rafPending = false;
 
-window.addEventListener('scroll', () => {
+function onScroll() {
   const scrollY = window.pageYOffset;
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
   const progress = Math.min(scrollY / maxScroll, 1);
 
   // Descent bar
   descentBar.style.width = `${progress * 100}%`;
 
-  // Depth display
+  // Depth display (falls back to layer depth in updateLayer)
   const depth = Math.round(progress * MAX_DEPTH);
-  depthNum.textContent = depth.toLocaleString();
+  if (currentLayer === -1) depthNum.textContent = depth.toLocaleString();
 
-  // Hero background parallax (slower)
+  // Hero background parallax
   heroBg.style.transform = `translateY(${scrollY * 0.15}px)`;
 
   // Nav bar
-  if (scrollY > 100) {
-    navBar.classList.add('scrolled');
-  } else {
-    navBar.classList.remove('scrolled');
+  navBar.classList.toggle('scrolled', scrollY > 100);
+
+  // Abyss image parallax (slower scroll for depth feel)
+  if (abyssImg) {
+    const imgRect = abyssImg.getBoundingClientRect();
+    const viewportCenter = window.innerHeight / 2;
+    const imgCenter = imgRect.top + imgRect.height / 2;
+    const offset = (imgCenter - viewportCenter) * 0.05;
+    abyssImg.style.transform = `translateY(${offset}px) scale(1.05)`;
   }
+
+  // Layer detection (only in abyss section area)
+  const abyssSection = document.getElementById('abyss-map');
+  if (abyssSection) {
+    const rect = abyssSection.getBoundingClientRect();
+    const total = rect.height + window.innerHeight;
+    const visible = total - Math.max(0, rect.bottom);
+    const sectionProgress = Math.max(0, Math.min(1, visible / total));
+    updateLayer(sectionProgress);
+  }
+
+  lastScrollY = scrollY;
+  rafPending = false;
+}
+
+// Throttled scroll handler with requestAnimationFrame
+window.addEventListener('scroll', () => {
+  if (!rafPending) {
+    rafPending = true;
+    requestAnimationFrame(onScroll);
+  }
+}, { passive: true });
+
+// Initial call
+onScroll();
+
+// Update on resize
+window.addEventListener('resize', () => {
+  requestAnimationFrame(onScroll);
 });
 
 // ══════════════════════════════════════════════════════════════
@@ -1204,16 +1562,6 @@ const observer = new IntersectionObserver((entries) => {
 
 // Story paragraphs
 document.querySelectorAll('.story-content p').forEach(el => observer.observe(el));
-
-// ══════════════════════════════════════════════════════════════
-//  ABYSS MAP HOTSPOT PREVIEW
-// ══════════════════════════════════════════════════════════════
-document.querySelectorAll('.map-hotspot').forEach(hotspot => {
-  hotspot.addEventListener('click', function(e) {
-    // The link will navigate naturally, no need to prevent default
-    // But we can add a subtle transition effect
-  });
-});
 </script>
 </body>
 </html>
