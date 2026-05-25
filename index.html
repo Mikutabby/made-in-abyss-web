@@ -32,10 +32,25 @@ h2 { font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; margin-bottom: 3re
   text-align: center;
   overflow: hidden;
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/hero-bg.webp') center/cover no-repeat;
+  opacity: 0.4;
+  z-index: 0;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7,7,13,0.6) 0%, rgba(7,7,13,0.3) 50%, rgba(7,7,13,0.8) 100%);
+  z-index: 0;
+}
 #hero-canvas {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
 }
 .hero-content {
   position: relative;
@@ -152,53 +167,70 @@ section { position: relative; padding: 6rem 1rem; }
 }
 .char-card {
   position: relative;
-  background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 1.2rem;
   padding: 2rem;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  padding-top: 4rem;
   overflow: hidden;
   transition: all 0.4s ease;
   cursor: pointer;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 .char-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(139,92,246,0.15), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s ease;
+  z-index: 0;
 }
-.char-card:hover::before { opacity: 1; }
+.char-card:nth-child(1)::before { background-image: url('assets/riko-reg.webp'); background-position: center 20%; }
+.char-card:nth-child(2)::before { background-image: url('assets/riko-reg-alt.webp'); background-position: center 20%; }
+.char-card:nth-child(3)::before { background-image: url('assets/nanachi-underground.webp'); background-position: center 30%; }
+.char-card:nth-child(4)::before { background-image: url('assets/ozen.webp'); background-position: center 20%; }
+.char-card:nth-child(5)::before { background-image: url('assets/bondrewd.webp'); background-position: center 20%; }
+.char-card:nth-child(6)::before { background-image: url('assets/nanachi-portrait.webp'); background-position: center 20%; }
+.char-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7,7,13,0.1) 0%, rgba(7,7,13,0.85) 60%, rgba(7,7,13,0.95) 100%);
+  z-index: 1;
+}
+.char-card:hover::before { transform: scale(1.08); }
 .char-card:hover {
   border-color: rgba(139,92,246,0.3);
   transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(139,92,246,0.1);
+  box-shadow: 0 20px 60px rgba(139,92,246,0.15);
 }
+.char-card > * { position: relative; z-index: 2; }
 .char-avatar {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   object-fit: cover;
-  border: 2px solid rgba(139,92,246,0.3);
+  border: 2px solid rgba(139,92,246,0.4);
+  box-shadow: 0 0 20px rgba(139,92,246,0.2);
 }
 .char-avatar-placeholder {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   border: 2px solid rgba(255,255,255,0.1);
 }
-.char-name { font-size: 1.3rem; font-weight: 400; margin-bottom: 0.3rem; }
+.char-name { font-size: 1.3rem; font-weight: 400; margin-bottom: 0.3rem; color: #fff; }
 .char-title { font-size: 0.85rem; color: #8b5cf6; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
-.char-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.6; }
+.char-desc { color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; }
 
 /* ── Story Section ─────────────────────────────────────── */
 .story-section {
@@ -254,13 +286,53 @@ section { position: relative; padding: 6rem 1rem; }
   background-position: center;
   will-change: transform;
 }
-.parallax-layer-1 { background: radial-gradient(ellipse at 50% 0%, #1a0a2e, transparent 60%); }
+.parallax-layer-1 { 
+  background: url('assets/abyss-landscape.webp') center/cover no-repeat;
+  opacity: 0.15;
+}
 .parallax-layer-2 { 
   background: 
     radial-gradient(2px 2px at 20% 30%, rgba(139,92,246,0.3), transparent),
     radial-gradient(2px 2px at 40% 70%, rgba(45,212,191,0.2), transparent),
     radial-gradient(1px 1px at 60% 20%, rgba(212,165,116,0.3), transparent),
     radial-gradient(1px 1px at 80% 50%, rgba(139,92,246,0.2), transparent);
+}
+.parallax-layer-3 {
+  background: url('assets/cave-environment.webp') center/cover no-repeat;
+  opacity: 0.08;
+}
+
+/* ── Gallery ────────────────────────────────────────────── */
+.gallery-section { background: #0a0a14; }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.gallery-item {
+  position: relative;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.4s ease;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.gallery-item:hover { border-color: rgba(139,92,246,0.3); }
+.gallery-item:hover img { transform: scale(1.1); }
+.gallery-item .gallery-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0.8rem;
+  background: linear-gradient(transparent, rgba(7,7,13,0.9));
+  color: #94a3b8;
+  font-size: 0.8rem;
 }
 
 /* ── Footer ─────────────────────────────────────────────── */
@@ -303,6 +375,7 @@ section { position: relative; padding: 6rem 1rem; }
 <div class="parallax-bg">
   <div class="parallax-layer parallax-layer-1" id="pl1"></div>
   <div class="parallax-layer parallax-layer-2" id="pl2"></div>
+  <div class="parallax-layer parallax-layer-3" id="pl3"></div>
 </div>
 
 <!-- ── Hero ─────────────────────────────────────────────── -->
@@ -479,6 +552,21 @@ section { position: relative; padding: 6rem 1rem; }
   </div>
 </section>
 
+<!-- ── Gallery ──────────────────────────────────────────── -->
+<section class="gallery-section" id="galeria">
+  <div class="section-inner">
+    <h2>Galería del Abismo</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="assets/abyss-landscape.webp" alt="Abismo" loading="lazy"><span class="gallery-label">El Abismo desde lo alto</span></div>
+      <div class="gallery-item"><img src="assets/cave-environment.webp" alt="Cueva" loading="lazy"><span class="gallery-label">Cuevas del Abismo</span></div>
+      <div class="gallery-item"><img src="assets/nanachi-mitty-hug.webp" alt="Nanachi y Mitty" loading="lazy"><span class="gallery-label">Nanachi y Mitty</span></div>
+      <div class="gallery-item"><img src="assets/nanachi-bunny.webp" alt="Nanachi" loading="lazy"><span class="gallery-label">Nanachi</span></div>
+      <div class="gallery-item"><img src="assets/nanachi-mitty-2.webp" alt="Nanachi y Mitty" loading="lazy"><span class="gallery-label">El refugio de Nanachi</span></div>
+      <div class="gallery-item"><img src="assets/abyss.gif" alt="Abyss GIF" loading="lazy"><span class="gallery-label">Profundidades del Abismo</span></div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Footer ───────────────────────────────────────────── -->
 <footer class="footer">
   <p>Fan page · Made in Abyss es propiedad de Akihito Tsukushi · Sin fines de lucro</p>
@@ -594,6 +682,7 @@ window.addEventListener('scroll', () => {
   const scrolled = window.pageYOffset;
   document.getElementById('pl1').style.transform = `translateY(${scrolled * 0.15}px)`;
   document.getElementById('pl2').style.transform = `translateY(${scrolled * 0.08}px)`;
+  document.getElementById('pl3').style.transform = `translateY(${scrolled * 0.05}px)`;
 });
 
 // ── Mouse Glow on Cards ──────────────────────────────────
