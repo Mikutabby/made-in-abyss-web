@@ -287,8 +287,44 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   letter-spacing: 0.1em;
   user-select: none;
   pointer-events: none;
-  transition: color var(--transition-theme);
+  transition: color var(--transition-theme), opacity 0.8s ease;
 }
+
+/* Layer description — appears on scroll when zone is active */
+.layer-desc {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  letter-spacing: 0.15em;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  white-space: nowrap;
+}
+
+/* Scroll-revealed: marker + desc become visible when body has that layer */
+body.layer-surface  .layer-zone-surface  .layer-marker { color: rgba(74,222,128,0.35); }
+body.layer-layer1   .layer-zone-layer1   .layer-marker { color: rgba(34,197,94,0.35); }
+body.layer-layer2   .layer-zone-layer2   .layer-marker { color: rgba(45,212,191,0.35); }
+body.layer-layer3   .layer-zone-layer3   .layer-marker { color: rgba(139,92,246,0.35); }
+body.layer-layer4   .layer-zone-layer4   .layer-marker { color: rgba(59,130,246,0.35); }
+body.layer-layer5   .layer-zone-layer5   .layer-marker { color: rgba(245,158,11,0.35); }
+body.layer-layer6   .layer-zone-layer6   .layer-marker { color: rgba(217,70,239,0.35); }
+body.layer-layer7   .layer-zone-layer7   .layer-marker { color: rgba(239,68,68,0.35); }
+
+body.layer-surface  .layer-zone-surface  .layer-desc,
+body.layer-layer1   .layer-zone-layer1   .layer-desc,
+body.layer-layer2   .layer-zone-layer2   .layer-desc,
+body.layer-layer3   .layer-zone-layer3   .layer-desc,
+body.layer-layer4   .layer-zone-layer4   .layer-desc,
+body.layer-layer5   .layer-zone-layer5   .layer-desc,
+body.layer-layer6   .layer-zone-layer6   .layer-desc,
+body.layer-layer7   .layer-zone-layer7   .layer-desc { opacity: 0.7; }
 
 /* ═══════════════════════════════════════════════════════════
    LAYER CARDS — Zigzag hover cards along the abyss
@@ -374,14 +410,21 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   padding: 0.4rem 0.7rem;
 }
 
-/* Card image — small circular thumbnail */
-.layer-card-img {
+/* Card image — colored emblem with layer number */
+.layer-card-emb {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
   flex-shrink: 0;
-  border: 1px solid rgba(255,255,255,0.1);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
 }
 .layer-card-info {
   display: flex;
@@ -883,7 +926,7 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     max-width: 200px !important;
     padding: 0.3rem 0.5rem !important;
   }
-  .layer-card-img { width: 28px; height: 28px; }
+  .layer-card-emb { width: 28px; height: 28px; font-size: 0.6rem; }
   .layer-card-name { font-size: 0.7rem; }
   .layer-card-depth { font-size: 0.6rem; }
   .layer-card-label { font-size: 0.55rem; }
@@ -964,12 +1007,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
   <div class="layer-zones">
     <div class="layer-zone layer-zone-surface" data-layer="surface">
       <span class="layer-marker">SUPERFICIE</span>
+      <span class="layer-desc">El comienzo del descenso</span>
       <div class="layer-card" data-layer-idx="0">
         <div class="layer-card-trigger">
           <span class="layer-card-num">0</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/riko.gif" alt="Riko">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#4ade80,#22c55e);">0</div>
           <div class="layer-card-info">
             <span class="layer-card-label">Superficie</span>
             <span class="layer-card-name">La Entrada</span>
@@ -980,12 +1024,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer1" data-layer="layer1">
       <span class="layer-marker">I</span>
+      <span class="layer-desc">El foso del mundo frágil</span>
       <div class="layer-card" data-layer-idx="1">
         <div class="layer-card-trigger">
           <span class="layer-card-num">I</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/reg.gif" alt="Reg">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#22c55e,#16a34a);">I</div>
           <div class="layer-card-info">
             <span class="layer-card-label">1.ª Capa</span>
             <span class="layer-card-name">Foso del Mundo Frágil</span>
@@ -996,12 +1041,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer2" data-layer="layer2">
       <span class="layer-marker">II</span>
+      <span class="layer-desc">El bosque de los colgantes</span>
       <div class="layer-card" data-layer-idx="2">
         <div class="layer-card-trigger">
           <span class="layer-card-num">II</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/nanachi.gif" alt="Nanachi">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#2dd4bf,#0d9488);">II</div>
           <div class="layer-card-info">
             <span class="layer-card-label">2.ª Capa</span>
             <span class="layer-card-name">Bosque de los Colgantes</span>
@@ -1012,12 +1058,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer3" data-layer="layer3">
       <span class="layer-marker">III</span>
+      <span class="layer-desc">La gran grieta</span>
       <div class="layer-card" data-layer-idx="3">
         <div class="layer-card-trigger">
           <span class="layer-card-num">III</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/ozen.gif" alt="Ozen">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);">III</div>
           <div class="layer-card-info">
             <span class="layer-card-label">3.ª Capa</span>
             <span class="layer-card-name">Gran Grieta</span>
@@ -1028,12 +1075,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer4" data-layer="layer4">
       <span class="layer-marker">IV</span>
+      <span class="layer-desc">El estanque de los sedientos</span>
       <div class="layer-card" data-layer-idx="4">
         <div class="layer-card-trigger">
           <span class="layer-card-num">IV</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/bondrewd.gif" alt="Bondrewd">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">IV</div>
           <div class="layer-card-info">
             <span class="layer-card-label">4.ª Capa</span>
             <span class="layer-card-name">Estanque de los Sedientos</span>
@@ -1044,12 +1092,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer5" data-layer="layer5">
       <span class="layer-marker">V</span>
+      <span class="layer-desc">El mar de los cadáveres</span>
       <div class="layer-card" data-layer-idx="5">
         <div class="layer-card-trigger">
           <span class="layer-card-num">V</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/prushka.gif" alt="Prushka">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#f59e0b,#d97706);">V</div>
           <div class="layer-card-info">
             <span class="layer-card-label">5.ª Capa</span>
             <span class="layer-card-name">Mar de los Cadáveres</span>
@@ -1060,12 +1109,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer6" data-layer="layer6">
       <span class="layer-marker">VI</span>
+      <span class="layer-desc">La ciudad incorruptible</span>
       <div class="layer-card" data-layer-idx="6">
         <div class="layer-card-trigger">
           <span class="layer-card-num">VI</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/mitty.gif" alt="Mitty">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#d946ef,#a21caf);">VI</div>
           <div class="layer-card-info">
             <span class="layer-card-label">6.ª Capa</span>
             <span class="layer-card-name">Ciudad Incorruptible</span>
@@ -1076,12 +1126,13 @@ body.layer-layer7   { --layer-color: #ef4444; --layer-glow: rgba(239,68,68,0.12)
     </div>
     <div class="layer-zone layer-zone-layer7" data-layer="layer7">
       <span class="layer-marker">VII</span>
+      <span class="layer-desc">El fondo del abismo</span>
       <div class="layer-card" data-layer-idx="7">
         <div class="layer-card-trigger">
           <span class="layer-card-num">VII</span>
         </div>
         <div class="layer-card-body">
-          <img class="layer-card-img" src="assets/abyss.gif" alt="El Abismo">
+          <div class="layer-card-emb" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">VII</div>
           <div class="layer-card-info">
             <span class="layer-card-label">7.ª Capa</span>
             <span class="layer-card-name">El Fondo del Abismo</span>
